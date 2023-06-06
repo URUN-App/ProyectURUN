@@ -52,9 +52,9 @@ Column(modifier= modifier) {
     Spacer(modifier =Modifier.padding(4.dp) )
     PasswordField()
     Spacer(modifier =Modifier.padding(8.dp) )
-    ForgotPassword(Modifier.align(Alignment.CenterHorizontally))
-    Spacer(modifier =Modifier.padding(16.dp) )
     LoginButton()
+    Spacer(modifier =Modifier.padding(16.dp) )
+    ForgotPassword(Modifier.align(Alignment.CenterHorizontally))
 }
 }
 @Composable
@@ -73,7 +73,7 @@ fun ForgotPassword(modifier: Modifier) {
 fun LoginButton() {
     Button(onClick = {},modifier = Modifier
         .fillMaxWidth()
-        .height(48.dp),colors=ButtonDefaults.buttonColors(containerColor = Color.Black, disabledContainerColor = Color.Green, contentColor = Color(0xFFCCFF00), disabledContentColor = Color(0xFF1E1E1E))) {
+        .height(48.dp),colors=ButtonDefaults.buttonColors(containerColor = Color(0xFFCCFF00), disabledContainerColor = Color.Green, contentColor = Color(0xFF1E1E1E), disabledContentColor = Color(0xFFCCFF00))) {
         Text(text = "Iniciar Sesion",
 
         )
