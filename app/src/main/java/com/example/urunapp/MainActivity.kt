@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import com.example.urunapp.navigation.AppNavigation
 import com.example.urunapp.ui.login.ui.LoginScreen
 import com.example.urunapp.ui.login.ui.LoginViewModel
 import com.example.urunapp.ui.register.ui.RegisterScreen
@@ -23,6 +24,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
+                    AppNavigation()
+                  StartScreen()
                     StartScreen()
                 LoginScreen(LoginViewModel())
                 RegisterScreen()
