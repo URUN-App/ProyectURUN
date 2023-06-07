@@ -13,6 +13,8 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -39,6 +41,7 @@ fun StartScreen(){
 }
 @Composable
 fun start(modifier: Modifier) {
+
     Column(modifier= modifier) {
         HeaderImage(Modifier.align(Alignment.CenterHorizontally))
         Spacer(modifier =Modifier.padding(12.dp) )
@@ -47,6 +50,16 @@ fun start(modifier: Modifier) {
         LoginButton()
         Spacer(modifier =Modifier.padding(12.dp) )
 
+    }
+}
+@Composable
+fun LoginButton() {
+    Button(onClick = {},modifier = Modifier
+        .fillMaxWidth()
+        .height(48.dp),colors=ButtonDefaults.buttonColors(containerColor = Color(0xFFCCFF00), disabledContainerColor = Color.Green, contentColor = Color(0xFF1E1E1E), disabledContentColor = Color(0xFFCCFF00))) {
+        Text(text = "Iniciar Sesion",
+
+            )
     }
 }
 
@@ -69,13 +82,4 @@ fun RegisterButton() {
     }
 }
 
-@Composable
-fun LoginButton() {
-    Button(onClick = {},modifier = Modifier
-        .fillMaxWidth()
-        .height(48.dp),colors=ButtonDefaults.buttonColors(containerColor = Color(0xFFCCFF00), disabledContainerColor = Color.Green, contentColor = Color(0xFF1E1E1E), disabledContentColor = Color(0xFFCCFF00))) {
-        Text(text = "Iniciar Sesion",
 
-            )
-    }
-}

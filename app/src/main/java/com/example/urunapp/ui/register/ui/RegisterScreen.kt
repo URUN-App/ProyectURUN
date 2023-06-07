@@ -18,6 +18,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,7 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.urunapp.R
-import com.example.urunapp.ui.login.ui.Login
+
 @Preview
 @Composable
 fun RegisterScreen(){
@@ -37,34 +39,41 @@ fun RegisterScreen(){
             .fillMaxSize()
 
             .background(Color(0xFF1E1E1E))) {
-        Register(Modifier.align(Alignment.Center))
+        Register(Modifier.align(Alignment.Center), viewModel = RegisterViewModel() )
 
     }
 }
+
+
 @Composable
-fun Register(modifier: Modifier) {
+fun Register(modifier: Modifier, viewModel: RegisterViewModel) {
+
+    val email: String by viewModel.email.observeAsState(initial = "")
+    val password: String by viewModel.password.observeAsState(initial = "")
+    val user: String by viewModel.user.observeAsState(initial = "")
+    val cpassword: String by viewModel.cpassword.observeAsState(initial = "")
+    val registerEnable:Boolean by viewModel.registerEnable.observeAsState(initial = false)
     Column(modifier= modifier) {
         HeaderImage(Modifier.align(Alignment.CenterHorizontally))
         Spacer(modifier =Modifier.padding(16.dp) )
-        UserField()
+        UserField(user){viewModel.onRegisterchanged(it,email,password,cpassword)}
         Spacer(modifier =Modifier.padding(4.dp) )
-        EmailField()
+        EmailField(email){viewModel.onRegisterchanged(it,user,password,cpassword)}
         Spacer(modifier =Modifier.padding(8.dp) )
-        PasswordField()
+        PasswordField(password){viewModel.onRegisterchanged(email,user,cpassword,it)}
         Spacer(modifier =Modifier.padding(8.dp) )
-        PasswordConfirmField(modifier =Modifier.padding(8.dp) )
+        PasswordConfirmField(cpassword){viewModel.onRegisterchanged(email,user,password,it)}
         Spacer(modifier =Modifier.padding(4.dp) )
         RegisterButton()
         Spacer(modifier =Modifier.padding(16.dp) )
         AccountHave(Modifier.align(Alignment.CenterHorizontally))
     }
 }
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PasswordConfirmField(modifier: Modifier) {
-    TextField(value ="" , onValueChange ={},
-        placeholder = { Text(text = "Contraseña") },
+fun PasswordConfirmField(cpassword:String,onTextFieldChanged:(String)-> Unit) {
+    TextField(value =cpassword , onValueChange ={onTextFieldChanged(it)},
+        placeholder = { Text(text = " Confirmar Contraseña") },
         modifier = Modifier.fillMaxWidth(),
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),singleLine = true,
         maxLines = 1,
@@ -74,11 +83,14 @@ fun PasswordConfirmField(modifier: Modifier) {
         ))
 }
 
+
+
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EmailField() {
-    TextField(value ="" , onValueChange ={},
-        placeholder = { Text(text = "Contraseña") },
+fun EmailField(email:String,onTextFieldChanged:(String)-> Unit) {
+    TextField(value =email , onValueChange ={onTextFieldChanged(it)},
+        placeholder = { Text(text = "Email") },
         modifier = Modifier.fillMaxWidth(),
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),singleLine = true,
         maxLines = 1,
@@ -114,8 +126,8 @@ fun RegisterButton() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PasswordField() {
-    TextField(value ="" , onValueChange ={},
+fun PasswordField(password:String,onTextFieldChanged:(String)-> Unit) {
+    TextField(value =password , onValueChange ={onTextFieldChanged(it)},
         placeholder = { Text(text = "Contraseña") },
         modifier = Modifier.fillMaxWidth(),
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),singleLine = true,
@@ -128,8 +140,8 @@ fun PasswordField() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun UserField() {
-    TextField(value = "", onValueChange ={}, modifier = Modifier.fillMaxWidth(), placeholder = { Text(text="Usuario") },
+fun UserField(user:String,onTextFieldChanged:(String)-> Unit) {
+    TextField(value =user , onValueChange ={onTextFieldChanged(it)} , modifier = Modifier.fillMaxWidth(), placeholder = { Text(text="Usuario") },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
         singleLine = true,
         maxLines = 1,
