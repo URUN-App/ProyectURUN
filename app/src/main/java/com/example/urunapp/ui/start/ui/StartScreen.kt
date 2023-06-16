@@ -13,70 +13,95 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import com.example.urunapp.R
-import com.example.urunapp.ui.login.ui.LoginButton
 import com.example.urunapp.ui.register.ui.HeaderImage
 import com.example.urunapp.ui.register.ui.RegisterButton
 
 
 @Preview
 @Composable
-fun StartScreen(){
+fun StartScreen(navController: NavController) {
     Box(
         Modifier
             .fillMaxSize()
 
-            .background(Color(0xFF1E1E1E))) {
-        start(Modifier.align(Alignment.Center))
+            .background(Color(0xFF1E1E1E))
+    ) {
+        start(Modifier.align(Alignment.Center), navController)
 
     }
 }
-@Composable
-fun start(modifier: Modifier) {
 
-    Column(modifier= modifier) {
+@Composable
+fun start(modifier: Modifier, navController: NavController) {
+
+    Column(modifier = modifier) {
         HeaderImage(Modifier.align(Alignment.CenterHorizontally))
-        Spacer(modifier =Modifier.padding(12.dp) )
-        RegisterButton()
-        Spacer(modifier =Modifier.padding(12.dp) )
-        LoginButton()
-        Spacer(modifier =Modifier.padding(12.dp) )
+        Spacer(modifier = Modifier.padding(12.dp))
+        RegisterButton(navController)
+        Spacer(modifier = Modifier.padding(12.dp))
+        LoginButton(navController)
+        Spacer(modifier = Modifier.padding(12.dp))
 
     }
 }
+
 @Composable
-fun LoginButton() {
-    Button(onClick = {},modifier = Modifier
-        .fillMaxWidth()
-        .height(48.dp),colors=ButtonDefaults.buttonColors(containerColor = Color(0xFFCCFF00), disabledContainerColor = Color.Green, contentColor = Color(0xFF1E1E1E), disabledContentColor = Color(0xFFCCFF00))) {
-        Text(text = "Iniciar Sesion",
+fun LoginButton(navController: NavController) {
+    Button(
+        onClick = {navController.navigate("login_screen")},
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(48.dp),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = Color(0xFFCCFF00),
+            disabledContainerColor = Color.Green,
+            contentColor = Color(0xFF1E1E1E),
+            disabledContentColor = Color(0xFFCCFF00)
+        )
+    ) {
+        Text(
+            text = "Iniciar Sesion",
 
             )
     }
 }
 
 
-@Preview(showBackground = true,showSystemUi = true)
+@Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun HeaderImage(Modifier: Modifier) {
-    Image(painter = painterResource(id = R.drawable.logo1), contentDescription = "Header",modifier=Modifier)
+    Image(
+        painter = painterResource(id = R.drawable.logo1),
+        contentDescription = "Header",
+        modifier = Modifier
+    )
 }
 
 
 @Composable
-fun RegisterButton() {
-    Button(onClick = {},modifier = Modifier
-        .fillMaxWidth()
-        .height(48.dp),colors= ButtonDefaults.buttonColors(containerColor = Color(0xFFCCFF00), disabledContainerColor = Color.Green, contentColor = Color(0xFF1E1E1E), disabledContentColor = Color(0xFFCCFF00))) {
-        Text(text = "Registrarse",
+fun RegisterButton(navController: NavController) {
+    Button(
+        onClick = { navController.navigate("register_screen") },
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(48.dp),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = Color(0xFFCCFF00),
+            disabledContainerColor = Color.Green,
+            contentColor = Color(0xFF1E1E1E),
+            disabledContentColor = Color(0xFFCCFF00)
+        )
+    ) {
+        Text(
+            text = "Registrarse",
 
             )
     }

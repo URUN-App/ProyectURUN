@@ -25,10 +25,10 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     AppNavigation()
-                  StartScreen()
-                    StartScreen()
-                LoginScreen(LoginViewModel())
-                RegisterScreen()
+
+
+
+
 
                 }
             }

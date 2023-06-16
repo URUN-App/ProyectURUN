@@ -2,12 +2,12 @@ package com.example.urunapp
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -19,21 +19,21 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.urunapp.navigation.AppScreens
 import com.example.urunapp.ui.login.ui.HeaderImage
-import com.example.urunapp.ui.login.ui.UserField
 import kotlinx.coroutines.delay
-
+@Preview(showBackground = true)
 @Composable
-fun SplashScreen(NavController:NavHostController){
-    LaunchedEffect(key1 = true){
+fun SplashScreen(NavController: NavHostController) {
+    LaunchedEffect(key1 = true) {
         delay(5000)
         NavController.popBackStack()
-        NavController.navigate(AppScreens.StartScreen.route )
+        NavController.navigate(AppScreens.StartScreen.route)
     }
 
     Box(
         Modifier
             .fillMaxSize()
-            .background(Color(0xFFCCFF00))) {
+            .background(Color(0xFF1E1E1E))
+    ) {
         Splash(Modifier.align(Alignment.Center))
 
     }
@@ -43,13 +43,18 @@ fun SplashScreen(NavController:NavHostController){
 @Composable
 fun Splash(modifier: Modifier) {
 
-    Column(modifier= modifier) {
+    Column(modifier = modifier) {
         HeaderImage(Modifier.align(Alignment.CenterHorizontally))
-        Spacer(modifier =Modifier.padding(16.dp) )
-       }
+        Spacer(modifier = Modifier.padding(16.dp))
+    }
 }
-@Preview(showBackground = true)
+
+
 @Composable
 fun HeaderImage(Modifier: Modifier) {
-    Image(painter = painterResource(id = R.drawable.logo), contentDescription = "Header",modifier=Modifier)
+    Image(
+        painter = painterResource(id = R.drawable.logourun),
+        contentDescription = "Header",
+        modifier = Modifier.size(100.dp)
+    )
 }
