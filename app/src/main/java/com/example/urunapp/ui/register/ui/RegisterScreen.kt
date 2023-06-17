@@ -1,5 +1,6 @@
 package com.example.urunapp.ui.register.ui
 
+import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.compose.foundation.Image
@@ -7,6 +8,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -24,18 +26,22 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.urunapp.R
-import com.example.urunapp.navigation.AppNavigation
 
 @Preview
 @Composable
@@ -61,7 +67,7 @@ fun Register(modifier: Modifier, viewModel: RegisterViewModel, navController: Na
     val user: String by viewModel.user.observeAsState(initial = "")
     val cpassword: String by viewModel.cpassword.observeAsState(initial = "")
     val registerEnable: Boolean by viewModel.registerEnable.observeAsState(initial = false)
-    Column(modifier = modifier) {
+    Column(modifier = modifier,) {
         HeaderImage(Modifier.align(Alignment.CenterHorizontally))
         Spacer(modifier = Modifier.padding(16.dp))
         UserField(user) { viewModel.onRegisterchanged(it, email, password, cpassword) }
@@ -74,7 +80,7 @@ fun Register(modifier: Modifier, viewModel: RegisterViewModel, navController: Na
         Spacer(modifier = Modifier.padding(4.dp))
         RegisterButton(navController)
         Spacer(modifier = Modifier.padding(16.dp))
-        AccountHave(Modifier.align(Alignment.CenterHorizontally))
+        AccountHave(Modifier.align(Alignment.CenterHorizontally),modifier.padding(paddingValues = PaddingValues(16.dp)))
         Spacer(modifier = Modifier.padding(16.dp))
     }
 }
@@ -113,7 +119,7 @@ fun EmailField(email: String, onTextFieldChanged: (String) -> Unit) {
 }
 
 @Composable
-fun AccountHave(modifier: Modifier) {
+fun AccountHave(modifier: Modifier, padding: Modifier) {
     Text(
         text = "Ya tienes una cuenta?Inicia sesión",
         modifier = Modifier.clickable { },
@@ -147,15 +153,20 @@ fun RegisterButton(navController: NavController) {
 }
 
 
+@SuppressLint("RememberReturnType")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PasswordField(password: String, onTextFieldChanged: (String) -> Unit) {
+    var hidden by remember {mutableStateOf(true)}
     TextField(
         value = password, onValueChange = { onTextFieldChanged(it) },
         placeholder = { Text(text = "Contraseña") },
         modifier = Modifier.fillMaxWidth(),
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password), singleLine = true,
         maxLines = 1,
+        visualTransformation =
+        if (hidden) PasswordVisualTransformation() else VisualTransformation.None,//3
+
         colors = TextFieldDefaults.textFieldColors(
             textColor = Color(0xFFCCFF00),
             containerColor = Color(0xFF1E1E1E)
