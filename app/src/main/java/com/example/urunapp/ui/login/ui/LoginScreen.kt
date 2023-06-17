@@ -41,8 +41,8 @@ fun LoginScreen(viewModel: LoginViewModel) {
     Box(
         Modifier
             .fillMaxSize()
-
             .background(Color(0xFF1E1E1E))
+            .padding(horizontal = 20.dp)
     ) {
         Login(Modifier.align(Alignment.Center), viewModel)
 

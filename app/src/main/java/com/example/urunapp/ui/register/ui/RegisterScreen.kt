@@ -50,6 +50,7 @@ fun   RegisterScreen(navController: NavController) {
         Modifier
             .fillMaxSize()
             .background(Color(0xFF1E1E1E))
+            .padding(horizontal = 20.dp)
             .verticalScroll(rememberScrollState())
     ) {
         Register(Modifier.align(Alignment.Center),
