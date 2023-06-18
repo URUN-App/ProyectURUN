@@ -11,7 +11,7 @@ import com.example.urunapp.navigation.AppNavigation
 import com.example.urunapp.ui.login.ui.LoginScreen
 import com.example.urunapp.ui.login.ui.LoginViewModel
 import com.example.urunapp.ui.register.ui.RegisterScreen
-import com.example.urunapp.ui.start.ui.StartScreen
+
 import com.example.urunapp.ui.theme.URUNAppTheme
 
 class MainActivity : ComponentActivity() {

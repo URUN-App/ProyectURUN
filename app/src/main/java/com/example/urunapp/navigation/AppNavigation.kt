@@ -10,7 +10,7 @@ import com.example.urunapp.SplashScreen
 import com.example.urunapp.ui.login.ui.LoginScreen
 import com.example.urunapp.ui.login.ui.LoginViewModel
 import com.example.urunapp.ui.register.ui.RegisterScreen
-import com.example.urunapp.ui.start.ui.StartScreen
+
 
 
 @Composable
@@ -20,9 +20,7 @@ fun AppNavigation() {
         composable(AppScreens.SplashScreen.route) {
             SplashScreen(NavController)
         }
-        composable(AppScreens.StartScreen.route) {
-            StartScreen(NavController)
-        }
+
         composable(AppScreens.LoginScreen.route){
             LoginScreen(viewModel = LoginViewModel())
         }
