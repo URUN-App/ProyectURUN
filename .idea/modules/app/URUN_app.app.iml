@@ -2,6 +2,7 @@
 <module version="4">
   <component name="ModuleClassLoaderOverlays">
     <paths>
+<<<<<<< HEAD
       <option value="/tmp/overlay12815772926093167213" />
       <option value="/tmp/overlay9655260961041970293" />
       <option value="/tmp/overlay9559944044381904642" />
@@ -12,6 +13,11 @@
       <option value="/tmp/overlay14486850154391278296" />
       <option value="/tmp/overlay15370255731759771549" />
       <option value="/tmp/overlay16432262395606710320" />
+=======
+      <option value="/tmp/overlay16894257101774893234" />
+      <option value="/tmp/overlay16894257101774893234" />
+      <option value="/tmp/overlay4198479690336815324" />
+>>>>>>> feature/screen_progress
     </paths>
   </component>
 </module>
