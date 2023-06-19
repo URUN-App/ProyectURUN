@@ -35,11 +35,13 @@ import com.example.urunapp.ui.theme.Mycolors
 @Preview
 @Composable
 fun ProgressScreen() {
+    // Este Column contiene toda las vistas y esta divido en box
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Mycolors.backgroundUrun)
     ) {
+        // Dentro de este box esta la imagen del logo
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -48,14 +50,18 @@ fun ProgressScreen() {
         ) {
             ImageLogo()
         }
+        //Dentro de este Box esta la seccion de actividades
         Box(modifier = Modifier.fillMaxWidth()) {
             Activities()
         }
+        //Dentro de este Box esta la seccion de Objetivo
+        // val progress controla como se va formando el circulo
         Box(modifier = Modifier.fillMaxWidth()) {
             val progress = 1f
             Objectives(progress = progress)
         }
         Spacer(modifier = Modifier.height(10.dp))
+        //Dentro de aca van los avatares
         Box(modifier = Modifier.fillMaxWidth()) {
 
             ImageAvatar()
