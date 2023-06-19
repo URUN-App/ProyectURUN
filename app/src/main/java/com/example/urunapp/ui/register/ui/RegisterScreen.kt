@@ -89,12 +89,15 @@ fun Register(modifier: Modifier, viewModel: RegisterViewModel, navController: Na
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PasswordConfirmField(cpassword: String, onTextFieldChanged: (String) -> Unit) {
+    var hidden by remember {mutableStateOf(true)}
     TextField(
         value = cpassword, onValueChange = { onTextFieldChanged(it) },
         placeholder = { Text(text = " Confirmar Contraseña") },
         modifier = Modifier.fillMaxWidth(),
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password), singleLine = true,
         maxLines = 1,
+        visualTransformation =
+        if (hidden) PasswordVisualTransformation() else VisualTransformation.None,
         colors = TextFieldDefaults.textFieldColors(
             textColor = Color(0xFFCCFF00),
             containerColor = Color(0xFF1E1E1E)
