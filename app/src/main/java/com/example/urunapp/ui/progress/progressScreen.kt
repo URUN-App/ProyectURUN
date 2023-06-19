@@ -57,7 +57,7 @@ fun ProgressScreen() {
         //Dentro de este Box esta la seccion de Objetivo
         // val progress controla como se va formando el circulo
         Box(modifier = Modifier.fillMaxWidth()) {
-            val progress = 1f
+            val progress = 0.8f
             Objectives(progress = progress)
         }
         Spacer(modifier = Modifier.height(10.dp))

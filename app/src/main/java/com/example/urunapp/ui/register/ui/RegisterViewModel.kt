@@ -24,12 +24,6 @@ class RegisterViewModel {
     val registerEnable: LiveData<Boolean> =_registerEnable
 
 
-    fun onRegisterchanged(email: String, password: String,user:String,cpassword:String) {
-        _email.value=email
-        _password.value=password
-        _user.value=user
-        _cpassword.value=cpassword
-    }
 
     private fun isValidPassword(password: String): Boolean=password.length>6
 
@@ -38,9 +32,20 @@ class RegisterViewModel {
         TODO("Not yet implemented")
     }
 
+    fun onEmailChanged(email: String) {
+        _email.value = email
 
+    }
+    fun onUserChanged(user:String){
+        _user.value = user
 
-
+    }
+    fun onPasswordChanged(password: String){
+        _password.value=password
+    }
+    fun onCPasswordChanged(cpassword:String){
+        _cpassword.value= cpassword
+    }
 
 
 }

@@ -1,5 +1,6 @@
 package com.example.urunapp.ui.register.ui
 
+import com.example.urunapp.ui.register.ui.RegisterViewModel
 import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
 import android.util.Log
@@ -64,24 +65,26 @@ fun   RegisterScreen(navController: NavController) {
 fun Register(modifier: Modifier, viewModel: RegisterViewModel, navController: NavController) {
 
     val email: String by viewModel.email.observeAsState(initial = "")
-    val password: String by viewModel.password.observeAsState(initial = "")
     val user: String by viewModel.user.observeAsState(initial = "")
+    val password: String by viewModel.password.observeAsState(initial = "")
     val cpassword: String by viewModel.cpassword.observeAsState(initial = "")
     val registerEnable: Boolean by viewModel.registerEnable.observeAsState(initial = false)
     Column(modifier = modifier,) {
         HeaderImage(Modifier.align(Alignment.CenterHorizontally))
         Spacer(modifier = Modifier.padding(16.dp))
-        UserField(user) { viewModel.onRegisterchanged(it, email, password, cpassword) }
+        EmailField(email) { viewModel.onEmailChanged(it) }
         Spacer(modifier = Modifier.padding(4.dp))
-        EmailField(email) { viewModel.onRegisterchanged(it, user, password, cpassword) }
+        UserField(user) { viewModel.onUserChanged(it) }
         Spacer(modifier = Modifier.padding(8.dp))
-        PasswordField(password) { viewModel.onRegisterchanged(email, user, cpassword, it) }
+        PasswordField(password) { viewModel.onPasswordChanged(it) }
         Spacer(modifier = Modifier.padding(8.dp))
-        PasswordConfirmField(cpassword) { viewModel.onRegisterchanged(email, user, password, it) }
-        Spacer(modifier = Modifier.padding(4.dp))
+        PasswordConfirmField(cpassword) { viewModel.onCPasswordChanged(it) }
+        Spacer(modifier = Modifier.padding(16.dp))
         RegisterButton(navController)
         Spacer(modifier = Modifier.padding(16.dp))
-        AccountHave(Modifier.align(Alignment.CenterHorizontally),modifier.padding(paddingValues = PaddingValues(16.dp)))
+        AccountHave(Modifier.align(Alignment.CenterHorizontally), modifier.padding(PaddingValues(16.dp)) )
+
+
         Spacer(modifier = Modifier.padding(16.dp))
     }
 }
@@ -109,17 +112,21 @@ fun PasswordConfirmField(cpassword: String, onTextFieldChanged: (String) -> Unit
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EmailField(email: String, onTextFieldChanged: (String) -> Unit) {
-    TextField(
-        value = email, onValueChange = { onTextFieldChanged(it) },
-        placeholder = { Text(text = "Email") },
+    TextField(value = email,
+        onValueChange = { onTextFieldChanged(it) },
         modifier = Modifier.fillMaxWidth(),
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email), singleLine = true,
+        placeholder = { Text(text = "Email") },
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+        singleLine = true,
         maxLines = 1,
         colors = TextFieldDefaults.textFieldColors(
             textColor = Color(0xFFCCFF00),
-            containerColor = Color(0xFF1E1E1E)
-        )
+            containerColor = Color(0xFF1E1E1E),
+
+
+            )
     )
+
 }
 
 @Composable
@@ -186,7 +193,7 @@ fun UserField(user: String, onTextFieldChanged: (String) -> Unit) {
         onValueChange = { onTextFieldChanged(it) },
         modifier = Modifier.fillMaxWidth(),
         placeholder = { Text(text = "Usuario") },
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
         singleLine = true,
         maxLines = 1,
         colors = TextFieldDefaults.textFieldColors(
@@ -199,7 +206,7 @@ fun UserField(user: String, onTextFieldChanged: (String) -> Unit) {
 
 }
 
-@Preview(showBackground = true, showSystemUi = true)
+
 @Composable
 fun HeaderImage(Modifier: Modifier) {
     Image(
