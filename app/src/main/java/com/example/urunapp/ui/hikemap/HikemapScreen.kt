@@ -39,6 +39,7 @@ import kotlin.concurrent.timer
 @Composable
 fun HikemapScreen() {
     // Este Column contiene toda las vistas y esta divido en box
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -80,6 +81,7 @@ fun ImageLogo() {
 @Composable
 fun MyGoogleMaps(){
 
+
     GoogleMap(Modifier.padding(start =30.dp, end = 30.dp, top = 300.dp ))
     {
         val sansalvador=LatLng(13.68935,-89.18718)
@@ -89,3 +91,5 @@ fun MyGoogleMaps(){
         }
     }
 }
+
+
