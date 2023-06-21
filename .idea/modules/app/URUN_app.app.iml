@@ -2,6 +2,7 @@
 <module version="4">
   <component name="ModuleClassLoaderOverlays">
     <paths>
+      <option value="/tmp/overlay3067942123309878375" />
       <option value="/tmp/overlay16080843895089675309" />
       <option value="/tmp/overlay6346883299192571713" />
       <option value="/tmp/overlay8362715696005275757" />
@@ -11,7 +12,6 @@
       <option value="/tmp/overlay3378790503794759121" />
       <option value="/tmp/overlay8813534691212342392" />
       <option value="/tmp/overlay9802899749580940355" />
-      <option value="/tmp/overlay2804181853710628910" />
     </paths>
   </component>
 </module>
