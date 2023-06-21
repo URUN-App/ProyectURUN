@@ -2,22 +2,16 @@
 <module version="4">
   <component name="ModuleClassLoaderOverlays">
     <paths>
-<<<<<<< HEAD
-      <option value="/tmp/overlay12815772926093167213" />
-      <option value="/tmp/overlay9655260961041970293" />
-      <option value="/tmp/overlay9559944044381904642" />
-      <option value="/tmp/overlay7697967536222071562" />
-      <option value="/tmp/overlay6780223730783745183" />
-      <option value="/tmp/overlay1678036021357169210" />
-      <option value="/tmp/overlay295108589003358818" />
-      <option value="/tmp/overlay14486850154391278296" />
-      <option value="/tmp/overlay15370255731759771549" />
-      <option value="/tmp/overlay16432262395606710320" />
-=======
-      <option value="/tmp/overlay16894257101774893234" />
-      <option value="/tmp/overlay16894257101774893234" />
-      <option value="/tmp/overlay4198479690336815324" />
->>>>>>> feature/screen_progress
+      <option value="/tmp/overlay3067942123309878375" />
+      <option value="/tmp/overlay16080843895089675309" />
+      <option value="/tmp/overlay6346883299192571713" />
+      <option value="/tmp/overlay8362715696005275757" />
+      <option value="/tmp/overlay3546553760286164481" />
+      <option value="/tmp/overlay18341947476366060197" />
+      <option value="/tmp/overlay3803124146405627074" />
+      <option value="/tmp/overlay3378790503794759121" />
+      <option value="/tmp/overlay8813534691212342392" />
+      <option value="/tmp/overlay9802899749580940355" />
     </paths>
   </component>
 </module>
