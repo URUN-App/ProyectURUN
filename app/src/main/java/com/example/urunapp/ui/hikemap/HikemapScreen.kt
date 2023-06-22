@@ -3,8 +3,10 @@ package com.example.urunapp.ui.hikemap
 import android.icu.text.Transliterator.Position
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,11 +14,16 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.magnifier
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.IntSize
 
 import androidx.compose.ui.unit.dp
 import com.example.urunapp.R
@@ -35,6 +42,9 @@ import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.currentCameraPositionState
 import com.google.maps.android.compose.rememberCameraPositionState
 import kotlin.concurrent.timer
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.unit.sp
 
 @Composable
 fun HikemapScreen() {
@@ -54,13 +64,20 @@ fun HikemapScreen() {
         ) {
             ImageLogo()
         }
-        //Dentro de este Box esta la seccion de actividades
+        Spacer(modifier = Modifier.height(5.dp))
+        //Dentro de aca van los avatares
+        Box(modifier = Modifier.fillMaxWidth()) {
 
-        //Dentro de este Box esta la seccion de Objetivo
-        // val progress controla como se va formando el circulo
+        }
+        Spacer(modifier = Modifier.height(5.dp))
+        //Dentro de aca van los avatares
+        Box(modifier = Modifier.fillMaxWidth()) {
+            resume()
+        }
+
 
         Spacer(modifier = Modifier.height(10.dp))
-        //Dentro de aca van los avatares
+
         Box(modifier = Modifier.fillMaxWidth()) {
             MyGoogleMaps()
 
@@ -68,6 +85,67 @@ fun HikemapScreen() {
 
     }
 }
+@Composable
+fun resume() {
+    Column(modifier = Modifier.fillMaxWidth()) {
+        Text(
+            text = "Resumen",
+            color = Color.White,
+            modifier = Modifier.padding(start = 20.dp),
+            fontSize = (30.sp)
+        )
+        Row(modifier = Modifier.width(400.dp).padding(start = 20.dp), Arrangement.SpaceBetween) {
+            Column(modifier = Modifier.width(200.dp)) {
+                Text(
+                    text = "0",
+                    color = Mycolors.greenUrun,
+                    modifier = Modifier.padding(start = 20.dp),
+                    fontSize = (40.sp)
+                )
+                Text(
+                    text = "Calorias(kcal)",
+                    color = Color.White,
+                    modifier = Modifier.padding(start = 30.dp),
+                    fontSize = (15.sp),
+                )
+            }
+            Column(modifier = Modifier.width(200.dp)) {
+                Text(
+                    text = "0",
+                    color = Mycolors.greenUrun,
+                    modifier = Modifier.padding(start = 20.dp),
+                    fontSize = (40.sp)
+                )
+                Text(
+                    text = "Distancia(km)",
+                    color = Color.White,
+                    modifier = Modifier.padding(start = 20.dp),
+                    fontSize = (15.sp),
+                )
+            }
+            Column(modifier = Modifier.width(200.dp)) {
+                Text(
+                    text = "0.0",
+                    color = Mycolors.greenUrun,
+                    modifier = Modifier.padding(start = 20.dp),
+                    fontSize = (40.sp)
+                )
+                Text(
+                    text = "Ritmo Medio",
+                    color = Color.White,
+                    modifier = Modifier.padding(start = 20.dp),
+                    fontSize = (15.sp),
+                )
+            }
+
+
+        }
+    }
+
+}
+
+
+
 @Composable
 fun ImageLogo() {
     Image(
@@ -78,6 +156,12 @@ fun ImageLogo() {
             .width(200.dp)
     )
 }
+
+
+
+
+
+
 @Composable
 fun MyGoogleMaps(){
 
