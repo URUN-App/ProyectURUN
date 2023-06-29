@@ -1,17 +1,17 @@
-package com.example.laboratorio11.network.service
+package com.example.urunapp.network.service
 
-import com.example.laboratorio11.network.dto.login.LoginRequest
-import com.example.laboratorio11.network.dto.login.LoginResponse
-import com.example.laboratorio11.network.dto.register.RegisterRequest
-import com.example.laboratorio11.network.dto.register.RegisterResponse
+import com.example.urunapp.network.dto.login.LoginRequest
+import com.example.urunapp.network.dto.login.LoginResponse
+import com.example.urunapp.network.dto.register.RegisterRequest
+import com.example.urunapp.network.dto.register.RegisterResponse
 import retrofit2.http.Body
 import retrofit2.http.POST
 
 interface AuthService {
 
-   @POST("api/auth/login")
+   @POST("api/auth/signin")
    suspend fun login(@Body credentials: LoginRequest): LoginResponse
 
-   @POST("api/auth/register")
+   @POST("api/auth/signup")
    suspend fun register(@Body credentials: RegisterRequest): RegisterResponse
 }
