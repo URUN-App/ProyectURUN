@@ -4,7 +4,7 @@ import com.example.urunapp.network.service.AuthService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-const val BASE_URL = "http://localhost:3000/"
+const val BASE_URL = "https://urun-api.up.railway.app/"
 
 object RetrofitInstance {
 
