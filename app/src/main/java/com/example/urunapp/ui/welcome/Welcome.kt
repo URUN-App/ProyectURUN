@@ -5,7 +5,9 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+
 import androidx.compose.foundation.layout.Row
+
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,12 +22,12 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -33,9 +35,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.urunapp.R
 import com.example.urunapp.ui.theme.Mycolors
-import java.time.format.TextStyle
 
 @Preview(showBackground = true)
 @Composable
@@ -57,7 +59,7 @@ fun ScreenWelcome() {
             ImageLogo()
         }
         Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterStart) {
-            InfoUser()
+            InfoUser(modifier = Modifier, viewModel = WelcomeViewModel(), navController = NavController)
 
         }
 
@@ -78,7 +80,13 @@ fun ImageLogo() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun InfoUser() {
+fun InfoUser(modifier: Modifier, viewModel: WelcomeViewModel, navController: NavController.Companion) {
+
+    val high: String by viewModel.high.observeAsState(initial = "")
+    val weight: String by viewModel.weight.observeAsState(initial = "")
+    val km: String by viewModel.km.observeAsState(initial = "")
+    val kcal: String by viewModel.kcal.observeAsState(initial = "")
+    val WelcomeEnable: Boolean by viewModel.welcomeEnable.observeAsState(initial = false)
     Column(modifier = Modifier.padding(vertical = 5.dp)) {
         Text(
             text = "Hola, Aida",
@@ -108,47 +116,10 @@ fun InfoUser() {
         )
         //Botones de cm y kg
         Spacer(modifier = Modifier.height(16.dp))
-        Row(verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(start = 50.dp, end = 50.dp)) {
-            Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                OutlinedTextField(
-                    value = "",
-                    onValueChange = {/*Actualizar datos para darle la funcionalida*/},
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(8.dp),
-                    textStyle = androidx.compose.ui.text.TextStyle(color = Color.White),
-                    label ={ Text(text = "cm")} ,
-                    shape = RoundedCornerShape(16.dp),
-                    colors = TextFieldDefaults.outlinedTextFieldColors(
-                        focusedBorderColor = Mycolors.greenUrun,
-                        focusedLabelColor = Mycolors.greenUrun
-
-                    )
-
-                )
-
-                OutlinedTextField(
-                    value = "",
-                    onValueChange = {/*Actualizar datos para darle la funcionalida*/},
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(8.dp),
-                    textStyle = androidx.compose.ui.text.TextStyle(color = Color.White),
-                    label ={ Text(text = "kg")} ,
-                    shape = RoundedCornerShape(16.dp),
-                    colors = TextFieldDefaults.outlinedTextFieldColors(
-                        focusedBorderColor = Mycolors.greenUrun,
-                        focusedLabelColor = Mycolors.greenUrun
-
-                    )
-
-                )
-            }
-        }
+        centimeters(high){viewModel.onHighChanged(it)}
+        kilogcals(weight  ){
+        viewModel.onWeightChanged(it)
+    }
 
 
         Spacer(modifier = Modifier.height(10.dp))
@@ -279,60 +250,10 @@ fun InfoUser() {
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.fillMaxWidth()) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(start = 50.dp, end = 50.dp)
-            ) {
-                OutlinedTextField(
-                    value = "",
-                    onValueChange = {/*Actualizar datos para darle la funcionalida*/},
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(8.dp),
-                    textStyle = androidx.compose.ui.text.TextStyle(color = Color.White),
-                    label ={ Text(text = "km")} ,
-                    shape = RoundedCornerShape(16.dp),
-                    colors = TextFieldDefaults.outlinedTextFieldColors(
-                        focusedBorderColor = Mycolors.greenUrun,
-                        focusedLabelColor = Mycolors.backgroundUrun
+         kilometers(km){viewModel.onKmChanged(it)}
 
-                    )
+         kilocals(kcal){viewModel.onKcalChanged(it)}
 
-                )
-
-                OutlinedTextField(
-                    value = "",
-                    onValueChange = {/*Actualizar datos para darle la funcionalida*/},
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(8.dp),
-                    textStyle = androidx.compose.ui.text.TextStyle(color = Color.White),
-                    label ={ Text(text = "kcal")} ,
-                    shape = RoundedCornerShape(16.dp),
-                    colors = TextFieldDefaults.outlinedTextFieldColors(
-                        focusedBorderColor = Mycolors.greenUrun,
-                        focusedLabelColor = Mycolors.greenUrun
-
-                    )
-
-                )
-                OutlinedTextField(
-                    value = "",
-                    onValueChange = {/*Actualizar datos para darle la funcionalida*/},
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(8.dp),
-                    textStyle = androidx.compose.ui.text.TextStyle(color = Color.White),
-                    label ={ Text(text = "kcal")} ,
-                    shape = RoundedCornerShape(16.dp),
-                    colors = TextFieldDefaults.outlinedTextFieldColors(
-                        focusedBorderColor = Mycolors.greenUrun,
-                        focusedLabelColor = Mycolors.greenUrun
-
-                    )
-
-                )
-            }
             //Boton iniciar
             Button(
                 onClick = { /* Acción del segundo botón */ },
@@ -353,5 +274,84 @@ fun InfoUser() {
 
 
 }
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun centimeters(high: String, onTextFieldChanged: (String) -> Unit){
+    OutlinedTextField(
+        value = high, onValueChange = { onTextFieldChanged(it) },
+        modifier = Modifier
+
+            .padding(8.dp),
+        textStyle = androidx.compose.ui.text.TextStyle(color = Color.White),
+        label ={ Text(text = "cm")} ,
+        shape = RoundedCornerShape(16.dp),
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            focusedBorderColor = Mycolors.greenUrun,
+            focusedLabelColor = Mycolors.greenUrun))
+}
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+  fun   kilogcals(weight: String, onTextFieldChanged: (String) -> Unit){
+
+    OutlinedTextField(
+        value = weight, onValueChange = { onTextFieldChanged(it) },
+        modifier = Modifier
+
+            .padding(8.dp),
+        textStyle = androidx.compose.ui.text.TextStyle(color = Color.White),
+        label ={ Text(text = "kg")} ,
+        shape = RoundedCornerShape(16.dp),
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            focusedBorderColor = Mycolors.greenUrun,
+            focusedLabelColor = Mycolors.greenUrun))
+    }
+
+
+
+
+
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun kilometers(km: String, onTextFieldChanged: (String) -> Unit){
+    OutlinedTextField(
+        value = km, onValueChange = { onTextFieldChanged(it) },
+        modifier = Modifier
+
+            .padding(8.dp),
+        textStyle = androidx.compose.ui.text.TextStyle(color = Color.White),
+        label ={ Text(text = "km")} ,
+        shape = RoundedCornerShape(16.dp),
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            focusedBorderColor = Mycolors.greenUrun,
+            focusedLabelColor = Mycolors.backgroundUrun))
+
+
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun kilocals(kcal: String, onTextFieldChanged: (String) -> Unit){
+    OutlinedTextField(
+        value = kcal, onValueChange = { onTextFieldChanged(it) },
+        modifier = Modifier
+
+            .padding(8.dp),
+        textStyle = androidx.compose.ui.text.TextStyle(color = Color.White),
+        label ={ Text(text = "kcal")} ,
+        shape = RoundedCornerShape(16.dp),
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            focusedBorderColor = Mycolors.greenUrun,
+            focusedLabelColor = Mycolors.greenUrun
+
+        )
+
+    )
+    }
+
 
 
