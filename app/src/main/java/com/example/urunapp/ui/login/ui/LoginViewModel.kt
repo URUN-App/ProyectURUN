@@ -1,34 +1,68 @@
 package com.example.urunapp.ui.login.ui
 
-import android.util.Patterns
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
+import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
+import com.example.urunapp.RetrofitApplication
+import com.example.urunapp.network.ApiResponse
+import com.example.urunapp.repository.CredentialsRepository
+import kotlinx.coroutines.launch
 
-class LoginViewModel:ViewModel(){
+class LoginViewModel(private val repository: CredentialsRepository) : ViewModel() {
 
+    var email = MutableLiveData("")
+    var password = MutableLiveData("")
 
-    private val _email=MutableLiveData<String>()
-    val email: LiveData<String> =_email
+    private val _status = MutableLiveData<LoginUiStatus>(LoginUiStatus.Resume)
+    val status: MutableLiveData<LoginUiStatus>
+        get() = _status
 
-    private val _password=MutableLiveData<String>()
-    val password: LiveData<String> =_password
-
-    private val _loginEnable=MutableLiveData<Boolean>()
-    val loginEnable: LiveData<Boolean> =_loginEnable
-
-    fun onLoginchanged(email: String, password: String) {
-        _email.value=email
-        _password.value=password
-        _loginEnable.value= isValidEmail(email ) && isValidPassword(password)
+    fun login(email: String, password: String) {
+        viewModelScope.launch {
+            _status.postValue(
+                when (val response = repository.login(email, password)) {
+                    is ApiResponse.Error -> LoginUiStatus.Error(response.exception)
+                    is ApiResponse.ErrorWithMessage -> LoginUiStatus.ErrorWithMessage(response.message)
+                    is ApiResponse.Success -> LoginUiStatus.Success(response.data)
+                }
+            )
+        }
     }
 
-    private fun isValidPassword(password: String): Boolean=password.length>6
-
-    private fun isValidEmail(email: String): Boolean= Patterns.EMAIL_ADDRESS.matcher(email).matches()
-    fun onLoginSelected() {
-        TODO("Not yet implemented")
+    fun onLogin() {
+        if (!validateData()) {
+            _status.value = LoginUiStatus.ErrorWithMessage("Wrong Information")
+            return
+        }
+        login(email.value!!, password.value!!)
     }
 
+    private fun validateData(): Boolean {
+        when {
+            email.value.isNullOrEmpty() -> return false
+            password.value.isNullOrEmpty() -> return false
+        }
+        return true
+    }
 
+    fun clearData() {
+        email.value = ""
+        password.value = ""
+    }
+
+    fun clearStatus() {
+        _status.value = LoginUiStatus.Resume
+    }
+
+    companion object {
+        val Factory = viewModelFactory {
+            initializer {
+                val app = this[APPLICATION_KEY] as RetrofitApplication
+                LoginViewModel(app.credentialsRepository)
+            }
+        }
+    }
 }
