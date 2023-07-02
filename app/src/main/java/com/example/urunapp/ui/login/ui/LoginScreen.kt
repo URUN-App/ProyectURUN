@@ -38,53 +38,73 @@ import com.example.urunapp.R
 
 @Composable
 fun LoginScreen(viewModel: LoginViewModel) {
+    val email: String by viewModel.email.observeAsState("")
+    val password: String by viewModel.password.observeAsState("")
+    val status: LoginUiStatus by viewModel.status.observeAsState(LoginUiStatus.Resume)
+
     Box(
         Modifier
             .fillMaxSize()
             .background(Color(0xFF1E1E1E))
             .padding(horizontal = 20.dp)
     ) {
-        Login(Modifier.align(Alignment.Center), viewModel)
+        Login(
+            Modifier.align(Alignment.Center),
+            email = email,
+            password = password,
+            onEmailChanged = { updatedEmail: String ->
+                viewModel.email.value = updatedEmail
+            },
+            onPasswordChanged = { updatedPassword: String ->
+                viewModel.password.value = updatedPassword
+            },
+            onLoginSelected = { viewModel.onLogin() }
+        )
 
-
+        when (status) {
+            is LoginUiStatus.ErrorWithMessage -> {
+                // Display error message
+                Text(
+                    text = (status as LoginUiStatus.ErrorWithMessage).message,
+                    color = Color.Red,
+                    modifier = Modifier.align(Alignment.BottomCenter)
+                )
+            }
+            is LoginUiStatus.Success -> {
+                // Handle success state
+                // You can navigate to a new screen or perform any action here
+            }
+            else -> Unit
+        }
     }
 }
 
 @Composable
-fun Login(modifier: Modifier, viewModel: LoginViewModel) {
-    val email: String by viewModel.email.observeAsState(initial = "")
-    val password: String by viewModel.password.observeAsState(initial = "")
-    val loginEnable: Boolean by viewModel.loginEnable.observeAsState(initial = false)
-
+fun Login(
+    modifier: Modifier,
+    email: String,
+    password: String,
+    onEmailChanged: (String) -> Unit,
+    onPasswordChanged: (String) -> Unit,
+    onLoginSelected: () -> Unit
+) {
     Column(modifier = modifier) {
         HeaderImage(Modifier.align(Alignment.CenterHorizontally))
         Spacer(modifier = Modifier.padding(16.dp))
-        UserField(email) { viewModel.onLoginchanged(it, password) }
+        UserField(email, onEmailChanged)
         Spacer(modifier = Modifier.padding(4.dp))
-        PasswordField(password) { viewModel.onLoginchanged(email, it) }
+        PasswordField(password, onPasswordChanged)
         Spacer(modifier = Modifier.padding(8.dp))
-        LoginButton(loginEnable) { viewModel.onLoginSelected() }
+        LoginButton(onLoginSelected)
         Spacer(modifier = Modifier.padding(16.dp))
         ForgotPassword(Modifier.align(Alignment.CenterHorizontally))
     }
 }
 
 @Composable
-fun ForgotPassword(modifier: Modifier) {
-    Text(
-        text = "Olvidaste la contrasaña?",
-        modifier = Modifier.clickable { },
-        fontSize = 12.sp,
-        fontWeight = FontWeight.Bold,
-        color = Color(0xFFCCFF00),
-    )
-
-}
-
-@Composable
-fun LoginButton(loginEnable: Boolean, onLoginSelected: () -> Unit) {
+fun LoginButton(onLoginSelected: () -> Unit) {
     Button(
-        onClick = { onLoginSelected() },
+        onClick = onLoginSelected,
         modifier = Modifier
             .fillMaxWidth()
             .height(48.dp),
@@ -93,17 +113,24 @@ fun LoginButton(loginEnable: Boolean, onLoginSelected: () -> Unit) {
             disabledContainerColor = Color(0xFFCCFF00),
             contentColor = Color(0xFF1E1E1E),
             disabledContentColor = Color(0xFF1E1E1E)
-        ),
-        enabled = loginEnable
-    )
-    {
+        )
+    ) {
         Text(
-            text = "Iniciar Sesion",
-
-            )
+            text = "Iniciar Sesion"
+        )
     }
 }
 
+@Composable
+fun ForgotPassword(modifier: Modifier) {
+    Text(
+        text = "Olvidaste la contraseña?",
+        modifier = Modifier.clickable { },
+        fontSize = 12.sp,
+        fontWeight = FontWeight.Bold,
+        color = Color(0xFFCCFF00),
+    )
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 
@@ -111,26 +138,29 @@ fun LoginButton(loginEnable: Boolean, onLoginSelected: () -> Unit) {
 fun PasswordField(password: String, onTextFieldChanged: (String) -> Unit) {
     var hidden by remember { mutableStateOf(true) }
     TextField(
-        value = password, onValueChange = { onTextFieldChanged(it) },
+        value = password,
+        onValueChange = { updatedPassword: String -> onTextFieldChanged(updatedPassword) },
         placeholder = { Text(text = "Contraseña") },
         modifier = Modifier.fillMaxWidth(),
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password), singleLine = true,
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+        singleLine = true,
         maxLines = 1,
         visualTransformation =
         if (hidden) PasswordVisualTransformation() else VisualTransformation.None,
         colors = TextFieldDefaults.textFieldColors(
             textColor = Color(0xFFCCFF00),
-            containerColor = Color(0xFF1E1E1E)
+            containerColor = Color(0xFF1E1E1E),
         )
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Composable
 
+@Composable
 fun UserField(email: String, onTextFieldChanged: (String) -> Unit) {
-    TextField(value = email,
-        onValueChange = { onTextFieldChanged(it) },
+    TextField(
+        value = email,
+        onValueChange = { updatedEmail: String -> onTextFieldChanged(updatedEmail) },
         modifier = Modifier.fillMaxWidth(),
         placeholder = { Text(text = "Usuario") },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
@@ -139,13 +169,9 @@ fun UserField(email: String, onTextFieldChanged: (String) -> Unit) {
         colors = TextFieldDefaults.textFieldColors(
             textColor = Color(0xFFCCFF00),
             containerColor = Color(0xFF1E1E1E),
-
-
-            )
+        )
     )
-
 }
-
 
 @Composable
 fun HeaderImage(Modifier: Modifier) {
