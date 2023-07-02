@@ -80,7 +80,7 @@ fun Register(modifier: Modifier, viewModel: RegisterViewModel, navController: Na
         Spacer(modifier = Modifier.padding(8.dp))
         PasswordConfirmField(cpassword) { viewModel.onCPasswordChanged(it) }
         Spacer(modifier = Modifier.padding(16.dp))
-        RegisterButton(navController)
+        RegisterButton1(navController)
         Spacer(modifier = Modifier.padding(16.dp))
         AccountHave(Modifier.align(Alignment.CenterHorizontally), modifier.padding(PaddingValues(16.dp)) )
 
@@ -142,7 +142,7 @@ fun AccountHave(modifier: Modifier, padding: Modifier) {
 }
 
 @Composable
-fun RegisterButton(navController: NavController) {
+fun RegisterButton1(navController: NavController) {
     Log.d(TAG, "RegisterButton: Adentro")
     Button(
         onClick = { navController.navigate("register_screen") },

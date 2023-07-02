@@ -63,7 +63,7 @@ fun Login(modifier: Modifier, viewModel: LoginViewModel) {
         Spacer(modifier = Modifier.padding(4.dp))
         PasswordField(password) { viewModel.onLoginchanged(email, it) }
         Spacer(modifier = Modifier.padding(8.dp))
-        LoginButton(loginEnable) { viewModel.onLoginSelected() }
+        LoginButton1(loginEnable) { viewModel.onLoginSelected() }
         Spacer(modifier = Modifier.padding(16.dp))
         ForgotPassword(Modifier.align(Alignment.CenterHorizontally))
     }
@@ -82,7 +82,7 @@ fun ForgotPassword(modifier: Modifier) {
 }
 
 @Composable
-fun LoginButton(loginEnable: Boolean, onLoginSelected: () -> Unit) {
+fun LoginButton1(loginEnable: Boolean, onLoginSelected: () -> Unit) {
     Button(
         onClick = { onLoginSelected() },
         modifier = Modifier
