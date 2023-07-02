@@ -72,7 +72,7 @@ fun Login(modifier: Modifier, viewModel: LoginViewModel) {
 @Composable
 fun ForgotPassword(modifier: Modifier) {
     Text(
-        text = "Olvidaste la contrasaña?",
+        text = "Olvidaste la contraseña?",
         modifier = Modifier.clickable { },
         fontSize = 12.sp,
         fontWeight = FontWeight.Bold,
