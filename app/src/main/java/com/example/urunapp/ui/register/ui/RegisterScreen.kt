@@ -1,9 +1,5 @@
 package com.example.urunapp.ui.register.ui
 
-import com.example.urunapp.ui.register.ui.RegisterViewModel
-import android.annotation.SuppressLint
-import android.content.ContentValues.TAG
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -27,9 +23,6 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -37,16 +30,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.urunapp.R
 
-@Preview
 @Composable
-fun   RegisterScreen(navController: NavController) {
+fun RegisterScreen(navController: NavController) {
+    val viewModel: RegisterViewModel = viewModel()
+
     Box(
         Modifier
             .fillMaxSize()
@@ -54,66 +47,46 @@ fun   RegisterScreen(navController: NavController) {
             .padding(horizontal = 20.dp)
             .verticalScroll(rememberScrollState())
     ) {
-        Register(Modifier.align(Alignment.Center),
-            viewModel = RegisterViewModel(), navController)
-
+        Register(
+            modifier = Modifier.align(Alignment.Center),
+            viewModel = viewModel,
+            navController = navController
+        )
     }
 }
+
 
 
 @Composable
 fun Register(modifier: Modifier, viewModel: RegisterViewModel, navController: NavController) {
-
     val email: String by viewModel.email.observeAsState(initial = "")
-    val user: String by viewModel.user.observeAsState(initial = "")
+    val name: String by viewModel.name.observeAsState(initial = "")
     val password: String by viewModel.password.observeAsState(initial = "")
-    val cpassword: String by viewModel.cpassword.observeAsState(initial = "")
-    val registerEnable: Boolean by viewModel.registerEnable.observeAsState(initial = false)
-    Column(modifier = modifier,) {
+
+    Column(modifier = modifier) {
         HeaderImage(Modifier.align(Alignment.CenterHorizontally))
         Spacer(modifier = Modifier.padding(16.dp))
-        EmailField(email) { viewModel.onEmailChanged(it) }
+        EmailField(email) { viewModel.email.value = it }
         Spacer(modifier = Modifier.padding(4.dp))
-        UserField(user) { viewModel.onUserChanged(it) }
+        UserField(name) { viewModel.name.value = it }
         Spacer(modifier = Modifier.padding(8.dp))
-        PasswordField(password) { viewModel.onPasswordChanged(it) }
-        Spacer(modifier = Modifier.padding(8.dp))
-        PasswordConfirmField(cpassword) { viewModel.onCPasswordChanged(it) }
+        PasswordField(password) { viewModel.password.value = it }
         Spacer(modifier = Modifier.padding(16.dp))
-        RegisterButton(navController)
+        RegisterButton(navController, viewModel)
         Spacer(modifier = Modifier.padding(16.dp))
-        AccountHave(Modifier.align(Alignment.CenterHorizontally), modifier.padding(PaddingValues(16.dp)) )
-
-
+        AccountHave(Modifier.align(Alignment.CenterHorizontally), modifier.padding(PaddingValues(16.dp)))
         Spacer(modifier = Modifier.padding(16.dp))
     }
 }
 
+
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PasswordConfirmField(cpassword: String, onTextFieldChanged: (String) -> Unit) {
-    var hidden by remember {mutableStateOf(true)}
+fun EmailField(email: String, onEmailChanged: (String) -> Unit) {
     TextField(
-        value = cpassword, onValueChange = { onTextFieldChanged(it) },
-        placeholder = { Text(text = " Confirmar Contraseña") },
-        modifier = Modifier.fillMaxWidth(),
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password), singleLine = true,
-        maxLines = 1,
-        visualTransformation =
-        if (hidden) PasswordVisualTransformation() else VisualTransformation.None,
-        colors = TextFieldDefaults.textFieldColors(
-            textColor = Color(0xFFCCFF00),
-            containerColor = Color(0xFF1E1E1E)
-        )
-    )
-}
-
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun EmailField(email: String, onTextFieldChanged: (String) -> Unit) {
-    TextField(value = email,
-        onValueChange = { onTextFieldChanged(it) },
+        value = email,
+        onValueChange = onEmailChanged,
         modifier = Modifier.fillMaxWidth(),
         placeholder = { Text(text = "Email") },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
@@ -122,75 +95,68 @@ fun EmailField(email: String, onTextFieldChanged: (String) -> Unit) {
         colors = TextFieldDefaults.textFieldColors(
             textColor = Color(0xFFCCFF00),
             containerColor = Color(0xFF1E1E1E),
-
-
-            )
+        )
     )
-
 }
 
 @Composable
-fun AccountHave(modifier: Modifier, padding: Modifier) {
+fun AccountHave(
+    modifier: Modifier = Modifier,
+    padding: Modifier = Modifier
+) {
     Text(
-        text = "Ya tienes una cuenta?Inicia sesión",
-        modifier = Modifier.clickable { },
+        text = "Ya tienes una cuenta? Inicia sesión",
+        modifier = modifier.clickable { },
         fontSize = 12.sp,
         fontWeight = FontWeight.Bold,
         color = Color(0xFFCCFF00),
     )
-
 }
 
 @Composable
-fun RegisterButton(navController: NavController) {
-    Log.d(TAG, "RegisterButton: Adentro")
+fun RegisterButton(navController: NavController, viewModel: RegisterViewModel) {
     Button(
-        onClick = { navController.navigate("register_screen") },
+        onClick = { viewModel.onRegister() },
         modifier = Modifier
             .fillMaxWidth()
             .height(48.dp),
         colors = ButtonDefaults.buttonColors(
             containerColor = Color(0xFFCCFF00),
-            disabledContainerColor = Color.Green,
-            contentColor = Color(0xFF1E1E1E),
-            disabledContentColor = Color(0xFFCCFF00)
+            contentColor = Color(0xFF1E1E1E)
         )
     ) {
-        Text(
-            text = "Registrarse",
-
-            )
+        Text(text = "Registrarse")
     }
 }
 
 
-@SuppressLint("RememberReturnType")
+
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PasswordField(password: String, onTextFieldChanged: (String) -> Unit) {
-    var hidden by remember {mutableStateOf(true)}
+fun PasswordField(password: String, onPasswordChanged: (String) -> Unit) {
     TextField(
-        value = password, onValueChange = { onTextFieldChanged(it) },
-        placeholder = { Text(text = "Contraseña") },
+        value = password,
+        onValueChange = onPasswordChanged,
         modifier = Modifier.fillMaxWidth(),
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password), singleLine = true,
+        placeholder = { Text(text = "Contraseña") },
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+        visualTransformation = PasswordVisualTransformation(),
+        singleLine = true,
         maxLines = 1,
-        visualTransformation =
-        if (hidden) PasswordVisualTransformation() else VisualTransformation.None,//3
-
         colors = TextFieldDefaults.textFieldColors(
             textColor = Color(0xFFCCFF00),
-            containerColor = Color(0xFF1E1E1E)
+            containerColor = Color(0xFF1E1E1E),
         )
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun UserField(user: String, onTextFieldChanged: (String) -> Unit) {
+fun UserField(name: String, onNameChanged: (String) -> Unit) {
     TextField(
-        value = user,
-        onValueChange = { onTextFieldChanged(it) },
+        value = name,
+        onValueChange = onNameChanged,
         modifier = Modifier.fillMaxWidth(),
         placeholder = { Text(text = "Usuario") },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
@@ -199,11 +165,8 @@ fun UserField(user: String, onTextFieldChanged: (String) -> Unit) {
         colors = TextFieldDefaults.textFieldColors(
             textColor = Color(0xFFCCFF00),
             containerColor = Color(0xFF1E1E1E),
-
-
-            )
+        )
     )
-
 }
 
 
