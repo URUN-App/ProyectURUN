@@ -1,51 +1,72 @@
 package com.example.urunapp.ui.register.ui
 
-import android.util.Patterns
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
+import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.initializer
+import androidx.lifecycle.viewmodel.viewModelFactory
+import com.example.urunapp.RetrofitApplication
+import com.example.urunapp.network.ApiResponse
+import com.example.urunapp.repository.CredentialsRepository
+import kotlinx.coroutines.launch
 
-class RegisterViewModel {
+class RegisterViewModel(private val repository: CredentialsRepository) : ViewModel() {
+    var name = MutableLiveData("")
+    var email = MutableLiveData("")
+    var password = MutableLiveData("")
 
-    private val _email= MutableLiveData<String>()
-    val email: LiveData<String> =_email
+    private val _status = MutableLiveData<RegisterUiStatus>(RegisterUiStatus.Resume)
+    val status: LiveData<RegisterUiStatus>
+        get() = _status
 
-    private val _user= MutableLiveData<String>()
-    val user: LiveData<String> =_user
-
-    private val _password= MutableLiveData<String>()
-    val password: LiveData<String> =_password
-
-    private val _cpassword= MutableLiveData<String>()
-    val cpassword: LiveData<String> =_cpassword
-
-
-
-    private val _registerEnable= MutableLiveData<Boolean>()
-    val registerEnable: LiveData<Boolean> =_registerEnable
-
-
-
-    private fun isValidPassword(password: String): Boolean=password.length>6
-
-    private fun isValidEmail(email: String): Boolean= Patterns.EMAIL_ADDRESS.matcher(email).matches()
-    fun onLoginSelected() {
-        TODO("Not yet implemented")
+    private fun register(name: String, email: String, password: String) {
+        viewModelScope.launch {
+            _status.postValue(
+                when (val response = repository.register(name, email, password)) {
+                    is ApiResponse.Error -> RegisterUiStatus.Error(response.exception)
+                    is ApiResponse.ErrorWithMessage -> RegisterUiStatus.ErrorWithMessage(response.message)
+                    is ApiResponse.Success -> RegisterUiStatus.Success
+                }
+            )
+        }
     }
 
-    fun onEmailChanged(email: String) {
-        _email.value = email
-
-    }
-    fun onUserChanged(user:String){
-        _user.value = user
-
-    }
-    fun onPasswordChanged(password: String){
-        _password.value=password
-    }
-    fun onCPasswordChanged(cpassword:String){
-        _cpassword.value= cpassword
+    fun onRegister() {
+        if (!validateData()){
+            _status.value = RegisterUiStatus.ErrorWithMessage("Wrong Information")
+            return
+        }
+        register(name.value!!,email.value!!, password.value!!)
     }
 
 
+    private fun validateData(): Boolean {
+        when {
+            name.value.isNullOrEmpty() -> return false
+            email.value.isNullOrEmpty() -> return false
+            password.value.isNullOrEmpty() -> return false
+        }
+        return true
+    }
+
+    fun clearStatus() {
+        _status.value = RegisterUiStatus.Resume
+    }
+
+    fun clearData() {
+        name.value = ""
+        email.value = ""
+        password.value = ""
+    }
+
+    companion object {
+        val Factory = viewModelFactory {
+            initializer {
+                val app = this[APPLICATION_KEY] as RetrofitApplication
+                RegisterViewModel(app.credentialsRepository)
+            }
+        }
+    }
 }
