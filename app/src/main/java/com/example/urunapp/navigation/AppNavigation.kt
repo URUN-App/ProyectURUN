@@ -34,9 +34,8 @@ fun AppNavigation(app: RetrofitApplication) {
     }
 
     val navController = rememberNavController()
-    val startDestination = remember { mutableStateOf(AppScreens.SplashScreen.route) }
 
-    NavHost(navController = navController, startDestination = startDestination.value) {
+    NavHost(navController = navController, startDestination = AppScreens.SplashScreen.route) {
         composable(route = AppScreens.SplashScreen.route) {
             SplashScreen(navController)
         }
@@ -47,7 +46,7 @@ fun AppNavigation(app: RetrofitApplication) {
             LoginScreen(
                 navController = navController,
                 viewModel = ViewModelProvider(
-                    navController.getViewModelStoreOwner(startDestination.value.hashCode()),
+                    navController.getViewModelStoreOwner(navController.graph.startDestinationId),
                     loginViewModelFactory
                 ).get(LoginViewModel::class.java)
             )
@@ -56,7 +55,7 @@ fun AppNavigation(app: RetrofitApplication) {
             RegisterScreen(
                 navController = navController,
                 viewModel = ViewModelProvider(
-                    navController.getViewModelStoreOwner(startDestination.value.hashCode()),
+                    navController.getViewModelStoreOwner(navController.graph.startDestinationId),
                     registerViewModelFactory
                 ).get(RegisterViewModel::class.java)
             )
