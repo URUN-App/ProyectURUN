@@ -22,10 +22,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.urunapp.R
 import com.example.urunapp.ui.register.ui.HeaderImage
-import com.example.urunapp.ui.register.ui.RegisterButton
 
 
-@Preview
 @Composable
 fun StartScreen(navController: NavController) {
     Box(
@@ -39,6 +37,7 @@ fun StartScreen(navController: NavController) {
     }
 }
 
+@Preview
 @Composable
 fun start(modifier: Modifier, navController: NavController) {
 
@@ -75,7 +74,7 @@ fun LoginButton(navController: NavController) {
 }
 
 
-@Preview(showBackground = true, showSystemUi = true)
+
 @Composable
 fun HeaderImage(Modifier: Modifier) {
     Image(
