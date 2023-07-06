@@ -1,42 +1,65 @@
 package com.example.urunapp.navigation
 
+
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.urunapp.RetrofitApplication
 import com.example.urunapp.SplashScreen
-import com.example.urunapp.repository.CredentialsRepository
 import com.example.urunapp.ui.login.ui.LoginScreen
 import com.example.urunapp.ui.login.ui.LoginViewModel
 import com.example.urunapp.ui.register.ui.RegisterScreen
 import com.example.urunapp.ui.start.ui.StartScreen
+import com.example.urunapp.ui.register.ui.RegisterViewModel
 
 @Composable
-fun AppNavigation(app: RetrofitApplication, navController: NavHostController) {
-    val viewModelFactory = viewModelFactory {
+fun AppNavigation(app: RetrofitApplication) {
+    val loginViewModelFactory = viewModelFactory {
         initializer {
             LoginViewModel(app.credentialsRepository)
         }
     }
 
-    NavHost(navController = navController, startDestination = AppScreens.SplashScreen.route) {
-        composable(AppScreens.SplashScreen.route) {
+    val registerViewModelFactory = viewModelFactory {
+        initializer {
+            RegisterViewModel(app.credentialsRepository)
+        }
+    }
+
+    val navController = rememberNavController()
+    val startDestination = remember { mutableStateOf(AppScreens.SplashScreen.route) }
+
+    NavHost(navController = navController, startDestination = startDestination.value) {
+        composable(route = AppScreens.SplashScreen.route) {
             SplashScreen(navController)
         }
-        composable(AppScreens.StartScreen.route) {
+        composable(route = AppScreens.StartScreen.route) {
             StartScreen(navController)
         }
-        composable(AppScreens.LoginScreen.route) {
-            LoginScreen(viewModel = ViewModelProvider(navController.getViewModelStoreOwner(AppScreens.LoginScreen.route.hashCode()), viewModelFactory).get(LoginViewModel::class.java))
+        composable(route = AppScreens.LoginScreen.route) {
+            LoginScreen(
+                navController = navController,
+                viewModel = ViewModelProvider(
+                    navController.getViewModelStoreOwner(startDestination.value.hashCode()),
+                    loginViewModelFactory
+                ).get(LoginViewModel::class.java)
+            )
         }
-        composable(AppScreens.RegisterScreen.route) {
-            RegisterScreen(navController)
+        composable(route = AppScreens.RegisterScreen.route) {
+            RegisterScreen(
+                navController = navController,
+                viewModel = ViewModelProvider(
+                    navController.getViewModelStoreOwner(startDestination.value.hashCode()),
+                    registerViewModelFactory
+                ).get(RegisterViewModel::class.java)
+            )
         }
     }
 }

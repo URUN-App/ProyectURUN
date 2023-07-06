@@ -37,9 +37,7 @@ import androidx.navigation.NavController
 import com.example.urunapp.R
 
 @Composable
-fun RegisterScreen(navController: NavController) {
-    val viewModel: RegisterViewModel = viewModel()
-
+fun RegisterScreen(navController: NavController, viewModel: RegisterViewModel) {
     Box(
         Modifier
             .fillMaxSize()

@@ -33,11 +33,12 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.urunapp.R
 
 
 @Composable
-fun LoginScreen(viewModel: LoginViewModel) {
+fun LoginScreen(navController: NavController, viewModel: LoginViewModel) {
     val email: String by viewModel.email.observeAsState("")
     val password: String by viewModel.password.observeAsState("")
     val status: LoginUiStatus by viewModel.status.observeAsState(LoginUiStatus.Resume)

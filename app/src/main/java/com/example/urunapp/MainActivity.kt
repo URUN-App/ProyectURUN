@@ -28,7 +28,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val navController = rememberNavController()
-                    AppNavigation(app = application as RetrofitApplication, navController = navController)
+                    AppNavigation(app = application as RetrofitApplication)
                 }
             }
         }
