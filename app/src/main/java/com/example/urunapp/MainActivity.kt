@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import androidx.navigation.compose.rememberNavController
 import com.example.urunapp.navigation.AppNavigation
 import com.example.urunapp.ui.hikemap.HikemapScreen
 
@@ -26,12 +27,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-
-                   AppNavigation()
-
-
-
-
+                    val navController = rememberNavController()
+                    AppNavigation(app = application as RetrofitApplication, navController = navController)
                 }
             }
         }
