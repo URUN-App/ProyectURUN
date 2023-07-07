@@ -21,7 +21,6 @@ class RegisterViewModel(private val repository: CredentialsRepository) : ViewMod
     val status: LiveData<RegisterUiStatus>
         get() = _status
 
-
     private fun register(repository: CredentialsRepository) {
         viewModelScope.launch {
             _status.postValue(

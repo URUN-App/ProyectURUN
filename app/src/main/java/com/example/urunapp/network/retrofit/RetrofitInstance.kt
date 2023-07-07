@@ -4,7 +4,7 @@ import com.example.urunapp.network.service.AuthService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-const val BASE_URL = "https://urun-api.up.railway.app/"
+const val BASE_URL = "https://urun-api-ad12e71d2e29.herokuapp.com/"
 
 object RetrofitInstance {
 

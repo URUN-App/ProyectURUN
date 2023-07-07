@@ -108,7 +108,6 @@ fun Login(
 
 @Composable
 fun LoginButton(navController: NavController,onLoginSelected: () -> Unit, viewModel: LoginViewModel) {
-
     val status: LoginUiStatus by viewModel.status.observeAsState(LoginUiStatus.Resume)
     Button(
         onClick = {if(status is LoginUiStatus.Success) {

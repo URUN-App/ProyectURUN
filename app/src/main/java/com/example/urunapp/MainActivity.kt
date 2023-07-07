@@ -27,8 +27,9 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    val navController = rememberNavController()
+
                     AppNavigation(app = application as RetrofitApplication)
+
                 }
             }
         }

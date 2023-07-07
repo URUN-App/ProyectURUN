@@ -8,12 +8,15 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.magnifier
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -44,8 +47,10 @@ import com.google.maps.android.compose.rememberCameraPositionState
 import kotlin.concurrent.timer
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 
+@Preview
 @Composable
 fun HikemapScreen() {
     // Este Column contiene toda las vistas y esta divido en box
@@ -54,33 +59,25 @@ fun HikemapScreen() {
         modifier = Modifier
             .fillMaxSize()
             .background(Mycolors.backgroundUrun)
+            .verticalScroll(rememberScrollState())
+
+
     ) {
         // Dentro de este box esta la imagen del logo
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(100.dp),
+                .height(50.dp),
             contentAlignment = Alignment.Center
         ) {
             ImageLogo()
         }
-        Spacer(modifier = Modifier.height(5.dp))
-        //Dentro de aca van los avatares
-        Box(modifier = Modifier.fillMaxWidth()) {
 
-        }
-        Spacer(modifier = Modifier.height(5.dp))
-        //Dentro de aca van los avatares
         Box(modifier = Modifier.fillMaxWidth()) {
             resume()
         }
-
-
-        Spacer(modifier = Modifier.height(10.dp))
-
         Box(modifier = Modifier.fillMaxWidth()) {
             MyGoogleMaps()
-
         }
 
     }
@@ -94,7 +91,9 @@ fun resume() {
             modifier = Modifier.padding(start = 20.dp),
             fontSize = (30.sp)
         )
-        Row(modifier = Modifier.width(400.dp).padding(start = 20.dp), Arrangement.SpaceBetween) {
+        Row(modifier = Modifier
+            .width(400.dp)
+            .padding(start = 20.dp), Arrangement.SpaceBetween) {
             Column(modifier = Modifier.width(200.dp)) {
                 Text(
                     text = "0",
@@ -166,15 +165,17 @@ fun ImageLogo() {
 fun MyGoogleMaps(){
 
 
-    GoogleMap(Modifier.padding(start =30.dp, end = 30.dp, top = 300.dp ))
-    {
-        val sansalvador=LatLng(13.68935,-89.18718)
-        val defaultCameraPosition= CameraPosition.fromLatLngZoom(sansalvador,11f)
-        val CameraPositionState= rememberCameraPositionState(){
-            position=defaultCameraPosition
+    Box(modifier = Modifier
+        .fillMaxWidth()
+        .padding(start = 20.dp, end = 20.dp, top = 150.dp)) {
+        GoogleMap()
+        {
+            val sansalvador=LatLng(13.68935,-89.18718)
+            val defaultCameraPosition= CameraPosition.fromLatLngZoom(sansalvador,11f)
+            val CameraPositionState= rememberCameraPositionState(){
+                position=defaultCameraPosition
+            }
         }
     }
+
 }
-
-
-//probando repo
