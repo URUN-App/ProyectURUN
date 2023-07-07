@@ -59,5 +59,8 @@ fun AppNavigation(app: RetrofitApplication) {
                 viewModel = ViewModelProvider(backStackEntry, registerViewModelFactory)[RegisterViewModel::class.java]
             )
         }
+        composable(route = AppScreens.WelcomeScreen.route) {
+            AppScreens.WelcomeScreen
+        }
     }
 }
