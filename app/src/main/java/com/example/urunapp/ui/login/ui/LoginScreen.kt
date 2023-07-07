@@ -112,7 +112,7 @@ fun LoginButton(navController: NavController,onLoginSelected: () -> Unit, viewMo
     val status: LoginUiStatus by viewModel.status.observeAsState(LoginUiStatus.Resume)
     Button(
         onClick = {if(status is LoginUiStatus.Success) {
-            navController.navigate(AppScreens.RegisterScreen.route)
+            navController.navigate(AppScreens.WelcomeScreen.route)
         }else {
             onLoginSelected()
         }},
