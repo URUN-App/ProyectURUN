@@ -1,6 +1,7 @@
 package com.example.urunapp.navigation
 
 
+import android.annotation.SuppressLint
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -19,6 +20,7 @@ import com.example.urunapp.ui.register.ui.RegisterScreen
 import com.example.urunapp.ui.start.ui.StartScreen
 import com.example.urunapp.ui.register.ui.RegisterViewModel
 
+@SuppressLint("UnrememberedGetBackStackEntry")
 @Composable
 fun AppNavigation(app: RetrofitApplication) {
     val loginViewModelFactory = viewModelFactory {
@@ -43,21 +45,18 @@ fun AppNavigation(app: RetrofitApplication) {
             StartScreen(navController)
         }
         composable(route = AppScreens.LoginScreen.route) {
+            val backStackEntry = remember { navController.getBackStackEntry(route = AppScreens.LoginScreen.route) }
             LoginScreen(
                 navController = navController,
-                viewModel = ViewModelProvider(
-                    navController.getViewModelStoreOwner(navController.graph.startDestinationId),
-                    loginViewModelFactory
-                ).get(LoginViewModel::class.java)
+                viewModel = ViewModelProvider(backStackEntry, loginViewModelFactory)[LoginViewModel::class.java]
             )
         }
+
         composable(route = AppScreens.RegisterScreen.route) {
+            val backStackEntry = remember { navController.getBackStackEntry(route = AppScreens.RegisterScreen.route) }
             RegisterScreen(
                 navController = navController,
-                viewModel = ViewModelProvider(
-                    navController.getViewModelStoreOwner(navController.graph.startDestinationId),
-                    registerViewModelFactory
-                ).get(RegisterViewModel::class.java)
+                viewModel = ViewModelProvider(backStackEntry, registerViewModelFactory)[RegisterViewModel::class.java]
             )
         }
     }
