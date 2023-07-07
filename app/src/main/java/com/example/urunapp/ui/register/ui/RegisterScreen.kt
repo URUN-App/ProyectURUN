@@ -1,5 +1,6 @@
 package com.example.urunapp.ui.register.ui
 
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -32,13 +33,18 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.urunapp.R
 import com.example.urunapp.navigation.AppScreens
+import com.example.urunapp.network.retrofit.RetrofitInstance
+import com.example.urunapp.network.service.AuthService
+import com.example.urunapp.repository.CredentialsRepository
 
 @Composable
 fun RegisterScreen(navController: NavController, viewModel: RegisterViewModel) {
+    val authService: AuthService = RetrofitInstance.getLoginService()
+    val repository = CredentialsRepository(api = authService)
+
     Box(
         Modifier
             .fillMaxSize()
@@ -49,15 +55,20 @@ fun RegisterScreen(navController: NavController, viewModel: RegisterViewModel) {
         Register(
             modifier = Modifier.align(Alignment.Center),
             viewModel = viewModel,
-            navController = navController
+            navController = navController,
+            repository = repository
         )
     }
 }
 
 
 
+
 @Composable
-fun Register(modifier: Modifier, viewModel: RegisterViewModel, navController: NavController) {
+fun Register(modifier: Modifier,
+             viewModel: RegisterViewModel,
+             navController: NavController,
+             repository: CredentialsRepository) {
     val email: String by viewModel.email.observeAsState(initial = "")
     val name: String by viewModel.name.observeAsState(initial = "")
     val password: String by viewModel.password.observeAsState(initial = "")
@@ -71,7 +82,7 @@ fun Register(modifier: Modifier, viewModel: RegisterViewModel, navController: Na
         Spacer(modifier = Modifier.padding(8.dp))
         PasswordField(password) { viewModel.password.value = it }
         Spacer(modifier = Modifier.padding(16.dp))
-        RegisterButton(navController, viewModel)
+        RegisterButton(navController, viewModel, repository)
         Spacer(modifier = Modifier.padding(16.dp))
         AccountHave(Modifier.align(Alignment.CenterHorizontally), modifier.padding(PaddingValues(16.dp)), navController = navController)
         Spacer(modifier = Modifier.padding(16.dp))
@@ -106,7 +117,8 @@ fun AccountHave(
 ) {
     Text(
         text = "Ya tienes una cuenta? Inicia sesión",
-        modifier = modifier.clickable { navController.navigate(AppScreens.LoginScreen.route) }, // Navega a LoginScreen
+        modifier = modifier.clickable { navController.navigate(AppScreens.LoginScreen.route) },
+        // Navega a LoginScreen
         fontSize = 12.sp,
         fontWeight = FontWeight.Bold,
         color = Color(0xFFCCFF00),
@@ -115,9 +127,16 @@ fun AccountHave(
 
 
 @Composable
-fun RegisterButton(navController: NavController, viewModel: RegisterViewModel) {
+fun RegisterButton(navController: NavController, viewModel: RegisterViewModel, repository: CredentialsRepository) {
+    val status: RegisterUiStatus by viewModel.status.observeAsState(RegisterUiStatus.Resume)
+
     Button(
-        onClick = { viewModel.onRegister() },
+        onClick = {
+            viewModel.onRegister()
+            if (status == RegisterUiStatus.Success) {
+                navController.navigate(AppScreens.LoginScreen.route)
+            }
+        },
         modifier = Modifier
             .fillMaxWidth()
             .height(48.dp),

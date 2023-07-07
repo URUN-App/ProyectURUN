@@ -21,10 +21,11 @@ class RegisterViewModel(private val repository: CredentialsRepository) : ViewMod
     val status: LiveData<RegisterUiStatus>
         get() = _status
 
-    private fun register(name: String, email: String, password: String) {
+
+    private fun register(repository: CredentialsRepository) {
         viewModelScope.launch {
             _status.postValue(
-                when (val response = repository.register(name, email, password)) {
+                when (val response = repository.register(name.value!!, email.value!!, password.value!!)) {
                     is ApiResponse.Error -> RegisterUiStatus.Error(response.exception)
                     is ApiResponse.ErrorWithMessage -> RegisterUiStatus.ErrorWithMessage(response.message)
                     is ApiResponse.Success -> RegisterUiStatus.Success
@@ -34,12 +35,13 @@ class RegisterViewModel(private val repository: CredentialsRepository) : ViewMod
     }
 
     fun onRegister() {
-        if (!validateData()){
+        if (!validateData()) {
             _status.value = RegisterUiStatus.ErrorWithMessage("Wrong Information")
             return
         }
-        register(name.value!!,email.value!!, password.value!!)
+        register(repository)
     }
+
 
 
     private fun validateData(): Boolean {
