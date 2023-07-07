@@ -72,8 +72,7 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel) {
                 )
             }
             is LoginUiStatus.Success -> {
-                // Handle success state
-                // You can navigate to a new screen or perform any action here
+                //TODO redirection to Login Success
             }
             else -> Unit
         }
@@ -92,7 +91,7 @@ fun Login(
     Column(modifier = modifier) {
         HeaderImage(Modifier.align(Alignment.CenterHorizontally))
         Spacer(modifier = Modifier.padding(16.dp))
-        UserField(email, onEmailChanged)
+        EmailField(email, onEmailChanged)
         Spacer(modifier = Modifier.padding(4.dp))
         PasswordField(password, onPasswordChanged)
         Spacer(modifier = Modifier.padding(8.dp))
@@ -117,7 +116,7 @@ fun LoginButton(onLoginSelected: () -> Unit) {
         )
     ) {
         Text(
-            text = "Iniciar Sesion"
+            text = "Iniciar Sesión"
         )
     }
 }
@@ -158,12 +157,12 @@ fun PasswordField(password: String, onTextFieldChanged: (String) -> Unit) {
 @OptIn(ExperimentalMaterial3Api::class)
 
 @Composable
-fun UserField(email: String, onTextFieldChanged: (String) -> Unit) {
+fun EmailField(email: String, onTextFieldChanged: (String) -> Unit) {
     TextField(
         value = email,
         onValueChange = { updatedEmail: String -> onTextFieldChanged(updatedEmail) },
         modifier = Modifier.fillMaxWidth(),
-        placeholder = { Text(text = "Usuario") },
+        placeholder = { Text(text = "Correo Electrónico") },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
         singleLine = true,
         maxLines = 1,
