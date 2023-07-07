@@ -33,8 +33,10 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.urunapp.R
+import com.example.urunapp.navigation.AppScreens
 
 
 @Composable
@@ -59,7 +61,9 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel) {
             onPasswordChanged = { updatedPassword: String ->
                 viewModel.password.value = updatedPassword
             },
-            onLoginSelected = { viewModel.onLogin() }
+            onLoginSelected = { viewModel.onLogin() },
+            navController = navController,
+            viewModel = viewModel
         )
 
         when (status) {
@@ -72,7 +76,6 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel) {
                 )
             }
             is LoginUiStatus.Success -> {
-                //TODO redirection to Login Success
             }
             else -> Unit
         }
@@ -86,7 +89,9 @@ fun Login(
     password: String,
     onEmailChanged: (String) -> Unit,
     onPasswordChanged: (String) -> Unit,
-    onLoginSelected: () -> Unit
+    onLoginSelected: () -> Unit,
+    navController: NavController,
+    viewModel: LoginViewModel
 ) {
     Column(modifier = modifier) {
         HeaderImage(Modifier.align(Alignment.CenterHorizontally))
@@ -95,16 +100,23 @@ fun Login(
         Spacer(modifier = Modifier.padding(4.dp))
         PasswordField(password, onPasswordChanged)
         Spacer(modifier = Modifier.padding(8.dp))
-        LoginButton(onLoginSelected)
+        LoginButton(navController, onLoginSelected, viewModel)
         Spacer(modifier = Modifier.padding(16.dp))
         ForgotPassword(Modifier.align(Alignment.CenterHorizontally))
     }
 }
 
 @Composable
-fun LoginButton(onLoginSelected: () -> Unit) {
+fun LoginButton(navController: NavController,onLoginSelected: () -> Unit, viewModel: LoginViewModel) {
+
+    val status: LoginUiStatus by viewModel.status.observeAsState(LoginUiStatus.Resume)
     Button(
-        onClick = onLoginSelected,
+        onClick = {if(status is LoginUiStatus.Success) {
+            navController.navigate(AppScreens.RegisterScreen.route)
+        }else {
+            onLoginSelected()
+        }},
+
         modifier = Modifier
             .fillMaxWidth()
             .height(48.dp),
