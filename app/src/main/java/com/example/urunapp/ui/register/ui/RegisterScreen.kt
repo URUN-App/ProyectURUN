@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.urunapp.R
+import com.example.urunapp.navigation.AppScreens
 
 @Composable
 fun RegisterScreen(navController: NavController, viewModel: RegisterViewModel) {
@@ -72,7 +73,7 @@ fun Register(modifier: Modifier, viewModel: RegisterViewModel, navController: Na
         Spacer(modifier = Modifier.padding(16.dp))
         RegisterButton(navController, viewModel)
         Spacer(modifier = Modifier.padding(16.dp))
-        AccountHave(Modifier.align(Alignment.CenterHorizontally), modifier.padding(PaddingValues(16.dp)))
+        AccountHave(Modifier.align(Alignment.CenterHorizontally), modifier.padding(PaddingValues(16.dp)), navController = navController)
         Spacer(modifier = Modifier.padding(16.dp))
     }
 }
@@ -100,16 +101,18 @@ fun EmailField(email: String, onEmailChanged: (String) -> Unit) {
 @Composable
 fun AccountHave(
     modifier: Modifier = Modifier,
-    padding: Modifier = Modifier
+    padding: Modifier = Modifier,
+    navController: NavController
 ) {
     Text(
         text = "Ya tienes una cuenta? Inicia sesión",
-        modifier = modifier.clickable { },
+        modifier = modifier.clickable { navController.navigate(AppScreens.LoginScreen.route) }, // Navega a LoginScreen
         fontSize = 12.sp,
         fontWeight = FontWeight.Bold,
         color = Color(0xFFCCFF00),
     )
 }
+
 
 @Composable
 fun RegisterButton(navController: NavController, viewModel: RegisterViewModel) {
