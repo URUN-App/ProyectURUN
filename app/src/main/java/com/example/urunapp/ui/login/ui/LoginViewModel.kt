@@ -10,6 +10,7 @@ import com.example.urunapp.RetrofitApplication
 import com.example.urunapp.network.ApiResponse
 import com.example.urunapp.repository.CredentialsRepository
 import kotlinx.coroutines.launch
+import java.lang.Exception
 
 class LoginViewModel(private val repository: CredentialsRepository) : ViewModel() {
 
@@ -26,7 +27,7 @@ class LoginViewModel(private val repository: CredentialsRepository) : ViewModel(
                 when (val response = repository.login(email, password)) {
                     is ApiResponse.Error -> LoginUiStatus.Error(response.exception)
                     is ApiResponse.ErrorWithMessage -> LoginUiStatus.ErrorWithMessage(response.message)
-                    is ApiResponse.Success -> LoginUiStatus.Success(response.data)
+                    is ApiResponse.Success -> LoginUiStatus.Success
                 }
             )
         }
@@ -37,8 +38,30 @@ class LoginViewModel(private val repository: CredentialsRepository) : ViewModel(
             _status.value = LoginUiStatus.ErrorWithMessage("Wrong Information")
             return
         }
-        login(email.value!!, password.value!!)
+        viewModelScope.launch {
+            try {
+                val response = repository.login(email.value!!, password.value!!)
+                when (response) {
+                    is ApiResponse.Success -> {
+                        // Inicio de sesión exitoso
+                        _status.value = LoginUiStatus.Success
+                    }
+                    is ApiResponse.ErrorWithMessage -> {
+                        // Error en el inicio de sesión (email no coincide)
+                        _status.value = LoginUiStatus.ErrorWithMessage(response.message)
+                    }
+                    is ApiResponse.Error -> {
+                        // Error en la solicitud (error de red, error del servidor, etc.)
+                        _status.value = LoginUiStatus.Error(response.exception)
+                    }
+                }
+            } catch (e: Throwable) {
+                // Error en la solicitud (error de red, error del servidor, etc.)
+                _status.value = LoginUiStatus.Error(e as Exception)
+            }
+        }
     }
+
 
     private fun validateData(): Boolean {
         when {
