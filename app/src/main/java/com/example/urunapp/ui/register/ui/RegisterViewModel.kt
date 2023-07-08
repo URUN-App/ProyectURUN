@@ -11,6 +11,7 @@ import com.example.urunapp.RetrofitApplication
 import com.example.urunapp.network.ApiResponse
 import com.example.urunapp.repository.CredentialsRepository
 import kotlinx.coroutines.launch
+import java.lang.Exception
 
 class RegisterViewModel(private val repository: CredentialsRepository) : ViewModel() {
     var name = MutableLiveData("")
@@ -21,7 +22,7 @@ class RegisterViewModel(private val repository: CredentialsRepository) : ViewMod
     val status: LiveData<RegisterUiStatus>
         get() = _status
 
-    private fun register(repository: CredentialsRepository) {
+    private fun register() {
         viewModelScope.launch {
             _status.postValue(
                 when (val response = repository.register(name.value!!, email.value!!, password.value!!)) {
@@ -33,13 +34,32 @@ class RegisterViewModel(private val repository: CredentialsRepository) : ViewMod
         }
     }
 
+
     fun onRegister() {
         if (!validateData()) {
             _status.value = RegisterUiStatus.ErrorWithMessage("Wrong Information")
             return
         }
-        register(repository)
+        viewModelScope.launch {
+            try {
+                val response = repository.register(name.value!!, email.value!!, password.value!!)
+                if (response is ApiResponse.Success) {
+                    // Registro exitoso
+                    _status.value = RegisterUiStatus.Success
+                } else if (response is ApiResponse.ErrorWithMessage) {
+                    // Error en el registro (nombre de usuario o email ya existen)
+                    _status.value = RegisterUiStatus.ErrorWithMessage(response.message)
+                } else {
+                    // Error en la solicitud (error de red, error del servidor, etc.)
+                    _status.value = RegisterUiStatus.Error(Throwable("Request error") as Exception)
+                }
+            } catch (e: Throwable) {
+                // Error en la solicitud (error de red, error del servidor, etc.)
+                _status.value = RegisterUiStatus.Error(e as Exception)
+            }
+        }
     }
+
 
 
 
