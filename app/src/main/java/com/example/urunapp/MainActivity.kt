@@ -28,7 +28,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
 
-                    AppNavigation(app = application as RetrofitApplication)
+
 
                 }
             }

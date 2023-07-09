@@ -8,7 +8,4 @@ sealed class AppScreens(val route:String){
 
     object WelcomeScreen : AppScreens("welcome_screen")
 
-
-
-
 }
