@@ -70,7 +70,6 @@ fun NavGraphBuilder.authNavGraph(navController: NavHostController,app: RetrofitA
     }
 }
 
-
 sealed class AuthScreen(val route: String){
     object SplashScreen:  AuthScreen("splash_screen")
     object StartScreen:  AuthScreen("start_screen")

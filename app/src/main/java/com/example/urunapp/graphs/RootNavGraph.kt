@@ -4,8 +4,9 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.example.urunapp.RetrofitApplication
-import com.example.urunapp.navigation.AppNavigation
+
 
 @Composable
 fun RootNavigationGraph(navController:NavHostController){
@@ -20,7 +21,7 @@ fun RootNavigationGraph(navController:NavHostController){
         //aca implentaremos la ruta de autenticacion
         //authNavGraph(app = application as RetrofitApplication)
        // authNavGraph(app = application as RetrofitApplication)
-        authNavGraph(navController = navController, app = RetrofitApplication() )
+        authNavGraph(navController = navController,app = RetrofitApplication() )
 
 
 

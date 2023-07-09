@@ -22,6 +22,7 @@ import com.example.urunapp.ui.register.ui.RegisterViewModel
 
 @SuppressLint("UnrememberedGetBackStackEntry")
 @Composable
+
 fun AppNavigation(app: RetrofitApplication) {
     val loginViewModelFactory = viewModelFactory {
         initializer {
