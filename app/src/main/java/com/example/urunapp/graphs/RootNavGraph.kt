@@ -20,6 +20,10 @@ fun RootNavigationGraph(navController:NavHostController){
         //aca implentaremos la ruta de autenticacion
         //authNavGraph(app = application as RetrofitApplication)
        // authNavGraph(app = application as RetrofitApplication)
+        authNavGraph(navController = navController, app = RetrofitApplication() )
+
+
+
 
     }
 }

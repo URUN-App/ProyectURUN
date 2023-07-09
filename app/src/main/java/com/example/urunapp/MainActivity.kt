@@ -8,6 +8,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
+import com.example.urunapp.graphs.RootNavigationGraph
 import com.example.urunapp.navigation.AppNavigation
 import com.example.urunapp.ui.hikemap.HikemapScreen
 
@@ -28,7 +29,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
 
-
+                    RootNavigationGraph(navController = rememberNavController())
 
                 }
             }

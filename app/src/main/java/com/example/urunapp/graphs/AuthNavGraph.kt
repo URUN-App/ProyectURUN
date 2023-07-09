@@ -25,8 +25,7 @@ import com.example.urunapp.ui.start.ui.start
 
 
 @SuppressLint("UnrememberedGetBackStackEntry")
-@Composable
-fun NavGraphBuilder.authNavGraph(app: RetrofitApplication) {
+fun NavGraphBuilder.authNavGraph(navController: NavHostController,app: RetrofitApplication) {
     val loginViewModelFactory = viewModelFactory {
         initializer {
             LoginViewModel(app.credentialsRepository)
@@ -39,9 +38,11 @@ fun NavGraphBuilder.authNavGraph(app: RetrofitApplication) {
         }
     }
 
-    val navController = rememberNavController()
 
-    NavHost(navController = navController, startDestination = AuthScreen.SplashScreen.route) {
+    navigation(
+        route = Graph.AUTHENTICATION,
+        startDestination =  AuthScreen.SplashScreen.route
+    ){
         composable(route = AuthScreen.SplashScreen.route) {
             SplashScreen(navController)
         }
