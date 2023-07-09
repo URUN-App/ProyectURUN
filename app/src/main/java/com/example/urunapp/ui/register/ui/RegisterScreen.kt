@@ -35,7 +35,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.urunapp.R
-import com.example.urunapp.navigation.AppScreens
+import com.example.urunapp.graphs.AuthScreen
+
 import com.example.urunapp.network.retrofit.RetrofitInstance
 import com.example.urunapp.network.service.AuthService
 import com.example.urunapp.repository.CredentialsRepository
@@ -117,7 +118,7 @@ fun AccountHave(
 ) {
     Text(
         text = "Ya tienes una cuenta? Inicia sesión",
-        modifier = modifier.clickable { navController.navigate(AppScreens.LoginScreen.route) },
+        modifier = modifier.clickable { navController.navigate(AuthScreen.LoginScreen.route) },
         // Navega a LoginScreen
         fontSize = 12.sp,
         fontWeight = FontWeight.Bold,
@@ -134,7 +135,7 @@ fun RegisterButton(navController: NavController, viewModel: RegisterViewModel, r
         onClick = {
             viewModel.onRegister()
             if (status == RegisterUiStatus.Success) {
-                navController.navigate(AppScreens.LoginScreen.route)
+                navController.navigate(AuthScreen.LoginScreen.route)
             }
         },
         modifier = Modifier

@@ -15,7 +15,6 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
 import com.example.urunapp.RetrofitApplication
 import com.example.urunapp.SplashScreen
-import com.example.urunapp.navigation.AppScreens
 import com.example.urunapp.ui.login.ui.LoginScreen
 import com.example.urunapp.ui.login.ui.LoginViewModel
 import com.example.urunapp.ui.register.ui.RegisterScreen
@@ -37,12 +36,11 @@ fun NavGraphBuilder.authNavGraph(navController: NavHostController,app: RetrofitA
             RegisterViewModel(app.credentialsRepository)
         }
     }
-
-
     navigation(
         route = Graph.AUTHENTICATION,
         startDestination =  AuthScreen.SplashScreen.route
     ){
+
         composable(route = AuthScreen.SplashScreen.route) {
             SplashScreen(navController)
         }

@@ -12,20 +12,15 @@ import com.example.urunapp.RetrofitApplication
 fun RootNavigationGraph(navController:NavHostController){
     NavHost(
         navController = navController,
-        route = Graph.ROOT,
-        startDestination = Graph.AUTHENTICATION
+        startDestination = Graph.AUTHENTICATION,
+        route = Graph.ROOT
+
         // esto nos indica a donde queremos llegar
         //que en nuestro caso es la starscreen
 
     ){
         //aca implentaremos la ruta de autenticacion
-        //authNavGraph(app = application as RetrofitApplication)
-       // authNavGraph(app = application as RetrofitApplication)
-        authNavGraph(navController = navController,app = RetrofitApplication() )
-
-
-
-
+        authNavGraph(navController = navController, app = RetrofitApplication())
     }
 }
 
