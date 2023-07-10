@@ -21,6 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.urunapp.R
+import com.example.urunapp.graphs.AuthScreen
 import com.example.urunapp.ui.register.ui.HeaderImage
 
 
@@ -55,7 +56,7 @@ fun start(modifier: Modifier, navController: NavController) {
 @Composable
 fun LoginButton(navController: NavController) {
     Button(
-        onClick = {navController.navigate("login_screen")},
+        onClick = {navController.navigate(AuthScreen.LoginScreen.route)},
         modifier = Modifier
             .fillMaxWidth()
             .height(48.dp),
