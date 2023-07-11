@@ -9,21 +9,19 @@ import com.example.urunapp.RetrofitApplication
 
 
 @Composable
-fun RootNavigationGraph(navController:NavHostController){
+fun RootNavigationGraph(navController: NavHostController) {
+    // Crea un NavHost que se encargará de la navegación.
     NavHost(
         navController = navController,
         startDestination = Graph.AUTHENTICATION,
         route = Graph.ROOT
-
-        // esto nos indica a donde queremos llegar
-        //que en nuestro caso es la starscreen
-
-    ){
-        //aca implentaremos la ruta de autenticacion
+    ) {
+        // Define la ruta de navegación para la autenticación.
         authNavGraph(navController = navController, app = RetrofitApplication())
     }
 }
 
+// Define un objeto llamado Graph que contiene constantes para las rutas de navegación.
 object Graph {
     const val ROOT = "root_graph"
     const val AUTHENTICATION = "auth_graph"
