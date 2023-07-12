@@ -17,16 +17,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.urunapp.navigation.AppScreens
+import com.example.urunapp.graphs.AuthScreen
 import com.example.urunapp.ui.login.ui.HeaderImage
 import kotlinx.coroutines.delay
 @Preview(showBackground = true)
 @Composable
 fun SplashScreen(NavController: NavHostController) {
     LaunchedEffect(key1 = true) {
-        delay(3000)
+        delay(2000)
         NavController.popBackStack()
-        NavController.navigate(AppScreens.StartScreen.route)
+        NavController.navigate(AuthScreen.StartScreen.route)
     }
 
     Box(
