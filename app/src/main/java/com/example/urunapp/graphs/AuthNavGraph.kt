@@ -46,7 +46,7 @@ fun NavGraphBuilder.authNavGraph(navController: NavHostController, app: Retrofit
     // Se utiliza la función de navegación para definir el gráfico de navegación
     // con una ruta y un destino inicial
     navigation(
-        route = Graph.AUTHENTICATION,
+        route = Graph.AUTHENTICATION, //aca es donde enlazos con root
         startDestination = AuthScreen.SplashScreen.route
     ) {
         // Definición de las diferentes pantallas dentro del gráfico de navegación

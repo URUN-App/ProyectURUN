@@ -13,7 +13,7 @@ class RetrofitApplication : Application() {
     // para inicializarla de forma perezosa.
     // Esta propiedad se utiliza para acceder a las preferencias compartidas de la aplicación.
     private val prefs: SharedPreferences by lazy {
-        this.getSharedPreferences("Retrofit", Context.MODE_PRIVATE)
+        applicationContext.getSharedPreferences("Retrofit", Context.MODE_PRIVATE)
     }
 
     // Función privada que se utiliza para obtener el servicio de API utilizando RetrofitInstance.
@@ -21,7 +21,7 @@ class RetrofitApplication : Application() {
     // y devuelve el servicio de inicio de sesión (LoginService) utilizando
     // la función getLoginService() de RetrofitInstance.
     private fun getAPIService() = with(RetrofitInstance) {
-        setToken(getToken())
+        //setToken(getToken())
         getLoginService()
     }
 

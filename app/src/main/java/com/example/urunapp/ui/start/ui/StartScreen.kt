@@ -89,7 +89,7 @@ fun HeaderImage(Modifier: Modifier) {
 @Composable
 fun RegisterButton(navController: NavController) {
     Button(
-        onClick = { navController.navigate("register_screen") },
+        onClick = { navController.navigate(AuthScreen.RegisterScreen.route) },
         modifier = Modifier
             .fillMaxWidth()
             .height(48.dp),
