@@ -1,5 +1,6 @@
 package com.example.urunapp.ui.login.ui
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
@@ -9,10 +10,12 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.urunapp.RetrofitApplication
 import com.example.urunapp.network.ApiResponse
 import com.example.urunapp.repository.CredentialsRepository
+import com.example.urunapp.ui.welcome.WelcomeViewModel
 import kotlinx.coroutines.launch
 import java.lang.Exception
 
-class LoginViewModel(private val repository: CredentialsRepository) : ViewModel() {
+class LoginViewModel(private val repository: CredentialsRepository,
+                     private val welcomeViewModel: WelcomeViewModel) : ViewModel() {
 
     var email = MutableLiveData("")
     var password = MutableLiveData("")
@@ -40,19 +43,35 @@ class LoginViewModel(private val repository: CredentialsRepository) : ViewModel(
         }
         viewModelScope.launch {
             try {
-                val response = repository.login(email.value!!, password.value!!)
-                when (response) {
+                val loginResponse = repository.login(email.value!!, password.value!!)
+                when (loginResponse) {
                     is ApiResponse.Success -> {
                         // Inicio de sesión exitoso
                         _status.value = LoginUiStatus.Success
+
+                        val userInfoResponse = repository.getUserInfo()
+                        when (userInfoResponse) {
+                            is ApiResponse.Success -> {
+                                val user = userInfoResponse.data.user
+                                welcomeViewModel.setUserEmail(user.email)
+                            }
+                            is ApiResponse.ErrorWithMessage -> {
+                                // Error al obtener la información del usuario
+                                _status.value = LoginUiStatus.ErrorWithMessage(userInfoResponse.message)
+                            }
+                            is ApiResponse.Error -> {
+                                // Error en la solicitud de información del usuario
+                                _status.value = LoginUiStatus.Error(userInfoResponse.exception)
+                            }
+                        }
                     }
                     is ApiResponse.ErrorWithMessage -> {
                         // Error en el inicio de sesión (email no coincide)
-                        _status.value = LoginUiStatus.ErrorWithMessage(response.message)
+                        _status.value = LoginUiStatus.ErrorWithMessage(loginResponse.message)
                     }
                     is ApiResponse.Error -> {
                         // Error en la solicitud (error de red, error del servidor, etc.)
-                        _status.value = LoginUiStatus.Error(response.exception)
+                        _status.value = LoginUiStatus.Error(loginResponse.exception)
                     }
                 }
             } catch (e: Throwable) {
@@ -60,6 +79,7 @@ class LoginViewModel(private val repository: CredentialsRepository) : ViewModel(
                 _status.value = LoginUiStatus.Error(e as Exception)
             }
         }
+
     }
 
 
@@ -84,8 +104,9 @@ class LoginViewModel(private val repository: CredentialsRepository) : ViewModel(
         val Factory = viewModelFactory {
             initializer {
                 val app = this[APPLICATION_KEY] as RetrofitApplication
-                LoginViewModel(app.credentialsRepository)
+                val welcomeViewModel = WelcomeViewModel()
+                LoginViewModel(app.credentialsRepository, welcomeViewModel)
             }
         }
     }
-}
+                     }

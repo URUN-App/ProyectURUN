@@ -1,45 +1,93 @@
 package com.example.urunapp.ui.welcome
 
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.example.urunapp.repository.CredentialsRepository
+import com.example.urunapp.ui.login.ui.LoginViewModel
 
-class WelcomeViewModel {
-    private val _high= MutableLiveData<String>()
-    val high: LiveData<String> =_high
+class WelcomeViewModel(private val credentialsRepository: CredentialsRepository) {
 
-    private val _weight= MutableLiveData<String>()
-    val weight: LiveData<String> =_weight
+    private val _userEmail = MutableLiveData<String>()
+    val userEmail: LiveData<String>
+        get() = _userEmail
 
-    private val _km= MutableLiveData<String>()
-    val km: LiveData<String> =_km
+    private val _altura = MutableLiveData<Double>()
+    val altura: LiveData<Double>
+        get() = _altura
 
-    private val _kcal= MutableLiveData<String>()
-    val kcal: LiveData<String> =_kcal
+    private val _peso = MutableLiveData<Double>()
+    val peso: LiveData<Double>
+        get() = _peso
 
-    private val _unk= MutableLiveData<String>()
-    val unk: LiveData<String> =_unk
+    private val _distancia = MutableLiveData<Double>()
+    val distancia: LiveData<Double>
+        get() = _distancia
 
-    private val _welcomeEnable= MutableLiveData<Boolean>()
-    val welcomeEnable: LiveData<Boolean> =_welcomeEnable
+    private val _calorias = MutableLiveData<Double>()
+    val calorias: LiveData<Double>
+        get() = _calorias
 
+    private val _actividad = MutableLiveData<String>()
+    val actividad: LiveData<String>
+        get() = _actividad
 
+    private val _periodo = MutableLiveData<String>()
+    val periodo: LiveData<String>
+        get() = _periodo
 
-    fun onHighChanged(high: String) {
-        _high.value = high
+    private val _veces = MutableLiveData<Int>()
+    val veces: LiveData<Int>
+        get() = _veces
 
+    init {
+        // Inicializa los valores iniciales de los LiveData según sea necesario
     }
-    fun onWeightChanged(weight:String){
-        _weight.value = weight
 
+    fun setUserEmail(email: String) {
+        _userEmail.value = email
     }
-    fun onKmChanged(km: String){
-        _km.value=km
+
+    fun setAltura(altura: Double) {
+        _altura.value = altura
     }
-    fun onKcalChanged(kcal:String){
-        _kcal.value= kcal
+
+    fun setPeso(peso: Double) {
+        _peso.value = peso
     }
-    fun onUnkChanged(unk:String){
-        _unk.value= unk
+
+    fun setDistancia(distancia: Double) {
+        _distancia.value = distancia
+    }
+
+    fun setCalorias(calorias: Double) {
+        _calorias.value = calorias
+    }
+
+    fun setActividad(actividad: String) {
+        _actividad.value = actividad
+    }
+
+    fun setPeriodo(periodo: String) {
+        _periodo.value = periodo
+    }
+
+    fun setVeces(veces: Int) {
+        _veces.value = veces
+    }
+
+    suspend fun saveObjective() {
+        val userEmail = _userEmail.value ?: return
+        val altura = _altura.value ?: return
+        val peso = _peso.value ?: return
+        val distancia = _distancia.value ?: return
+        val calorias = _calorias.value ?: return
+        val actividad = _actividad.value ?: return
+        val periodo = _periodo.value ?: return
+        val veces = _veces.value ?: return
+
+        val response = credentialsRepository.createObjective(userEmail, altura, peso, actividad, periodo, distancia, calorias, veces)
     }
 }
 

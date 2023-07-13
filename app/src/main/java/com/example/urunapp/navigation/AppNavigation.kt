@@ -19,13 +19,17 @@ import com.example.urunapp.ui.login.ui.LoginViewModel
 import com.example.urunapp.ui.register.ui.RegisterScreen
 import com.example.urunapp.ui.start.ui.StartScreen
 import com.example.urunapp.ui.register.ui.RegisterViewModel
+import com.example.urunapp.ui.welcome.ScreenWelcome
+import com.example.urunapp.ui.welcome.WelcomeViewModel
 
 @SuppressLint("UnrememberedGetBackStackEntry")
 @Composable
 fun AppNavigation(app: RetrofitApplication) {
+
+    val welcomeViewModel = WelcomeViewModel()
     val loginViewModelFactory = viewModelFactory {
         initializer {
-            LoginViewModel(app.credentialsRepository)
+            LoginViewModel(app.credentialsRepository, welcomeViewModel)
         }
     }
 
@@ -60,7 +64,7 @@ fun AppNavigation(app: RetrofitApplication) {
             )
         }
         composable(route = AppScreens.WelcomeScreen.route) {
-            AppScreens.WelcomeScreen
+            ScreenWelcome()
         }
     }
 }
