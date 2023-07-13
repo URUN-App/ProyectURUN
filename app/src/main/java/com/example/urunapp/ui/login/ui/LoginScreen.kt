@@ -36,7 +36,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.urunapp.R
-import com.example.urunapp.navigation.AppScreens
+import com.example.urunapp.graphs.AuthScreen
 
 
 @Composable
@@ -111,7 +111,7 @@ fun LoginButton(navController: NavController,onLoginSelected: () -> Unit, viewMo
     val status: LoginUiStatus by viewModel.status.observeAsState(LoginUiStatus.Resume)
     Button(
         onClick = {if(status is LoginUiStatus.Success) {
-            navController.navigate(AppScreens.WelcomeScreen.route)
+            navController.navigate(AuthScreen.WelcomeScreen.route)
         }else {
             onLoginSelected()
         }},
