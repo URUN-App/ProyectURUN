@@ -37,10 +37,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.urunapp.R
 import com.example.urunapp.graphs.AuthScreen
+import com.example.urunapp.ui.welcome.WelcomeViewModel
 
 
 @Composable
-fun LoginScreen(navController: NavController, viewModel: LoginViewModel) {
+fun LoginScreen(navController: NavController, viewModel: LoginViewModel, welcomeViewModel: WelcomeViewModel) {
     val email: String by viewModel.email.observeAsState("")
     val password: String by viewModel.password.observeAsState("")
     val status: LoginUiStatus by viewModel.status.observeAsState(LoginUiStatus.Resume)

@@ -104,7 +104,7 @@ class LoginViewModel(private val repository: CredentialsRepository,
         val Factory = viewModelFactory {
             initializer {
                 val app = this[APPLICATION_KEY] as RetrofitApplication
-                val welcomeViewModel = WelcomeViewModel()
+                val welcomeViewModel = WelcomeViewModel(app.credentialsRepository)
                 LoginViewModel(app.credentialsRepository, welcomeViewModel)
             }
         }
