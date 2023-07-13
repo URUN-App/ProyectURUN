@@ -23,6 +23,8 @@ import com.example.urunapp.ui.register.ui.RegisterScreen
 import com.example.urunapp.ui.register.ui.RegisterViewModel
 import com.example.urunapp.ui.start.ui.StartScreen
 import com.example.urunapp.ui.start.ui.start
+import com.example.urunapp.ui.welcome.ScreenWelcome
+import com.example.urunapp.ui.welcome.WelcomeViewModel
 
 // Anotación que suprime el lint para la advertencia de "UnrememberedGetBackStackEntry"
 @SuppressLint("UnrememberedGetBackStackEntry")
@@ -31,9 +33,10 @@ import com.example.urunapp.ui.start.ui.start
 fun NavGraphBuilder.authNavGraph(navController: NavHostController, app: RetrofitApplication) {
 
     // Se crean los ViewModelFactory para los ViewModels utilizados en la navegación
+    val welcomeViewModel = WelcomeViewModel(app.credentialsRepository)
     val loginViewModelFactory = viewModelFactory {
         initializer {
-            LoginViewModel(app.credentialsRepository)
+            LoginViewModel(app.credentialsRepository, welcomeViewModel)
         }
     }
 
@@ -81,13 +84,14 @@ fun NavGraphBuilder.authNavGraph(navController: NavHostController, app: Retrofit
             LoginScreen(
                 navController = navController,
                 // Se obtiene el ViewModel asociado a esta pantalla utilizando el backStackEntry y el ViewModelFactory
-                viewModel = ViewModelProvider(backStackEntry, loginViewModelFactory)[LoginViewModel::class.java]
+                viewModel = ViewModelProvider(backStackEntry, loginViewModelFactory)[LoginViewModel::class.java],
+                welcomeViewModel = welcomeViewModel
             )
         }
 
         // WelcomeScreen es la pantalla de bienvenida
         composable(route = AuthScreen.WelcomeScreen.route) {
-            AuthScreen.WelcomeScreen
+            ScreenWelcome(viewModel = welcomeViewModel)
         }
     }
 }
