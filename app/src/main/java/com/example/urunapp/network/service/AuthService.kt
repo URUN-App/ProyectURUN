@@ -7,7 +7,6 @@ import com.example.urunapp.network.dto.objective.ObjectiveRequest
 import com.example.urunapp.network.dto.objective.ObjectiveResponse
 import com.example.urunapp.network.dto.register.RegisterRequest
 import com.example.urunapp.network.dto.register.RegisterResponse
-import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST

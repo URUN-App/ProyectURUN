@@ -1,14 +1,11 @@
 package com.example.urunapp.repository
 
 import com.example.urunapp.network.ApiResponse
-import com.example.urunapp.network.dto.infouser.User
 import com.example.urunapp.network.dto.infouser.UserInfoResponse
 import com.example.urunapp.network.dto.login.LoginRequest
 import com.example.urunapp.network.dto.objective.ObjectiveRequest
-import com.example.urunapp.network.dto.objective.ObjectiveResponse
 import com.example.urunapp.network.dto.register.RegisterRequest
 import com.example.urunapp.network.service.AuthService
-import com.google.gson.annotations.SerializedName
 import retrofit2.HttpException
 import java.io.IOException
 
@@ -58,8 +55,9 @@ class CredentialsRepository(private val api: AuthService) {
         }
     }
 
-    suspend fun createObjective(user: String, altura: Double, peso: Double, actividad: String,
-    periodo: String, distancia: Double, calorias: Double, veces: Int): ApiResponse<String> {
+    suspend fun createObjective(
+        user: String, altura: String, peso: String, actividad: String,
+        periodo: String, distancia: String, calorias: Double, veces: Int): ApiResponse<String> {
 
         try {
             val response = api.createObjective(ObjectiveRequest(

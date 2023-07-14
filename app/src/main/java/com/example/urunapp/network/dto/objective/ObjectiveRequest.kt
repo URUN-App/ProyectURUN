@@ -6,15 +6,15 @@ data class ObjectiveRequest(
     @SerializedName("user")
     val user: String,
     @SerializedName("Altura")
-    val altura: Double,
+    val altura: String,
     @SerializedName("Peso")
-    val peso: Double,
+    val peso: String,
     @SerializedName("Actividad")
     val actividad: String,
     @SerializedName("Periodo")
     val periodo: String,
     @SerializedName("Distancia")
-    val distancia: Double,
+    val distancia: String,
     @SerializedName("Calorias")
     val calorias: Double,
     @SerializedName("Veces")
