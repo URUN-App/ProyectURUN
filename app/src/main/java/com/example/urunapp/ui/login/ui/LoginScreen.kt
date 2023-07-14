@@ -14,6 +14,8 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -144,8 +146,28 @@ fun ForgotPassword(modifier: Modifier) {
     )
 }
 
+//@OptIn(ExperimentalMaterial3Api::class)
+//
+//@Composable
+//fun PasswordField(password: String, onTextFieldChanged: (String) -> Unit) {
+//    var hidden by remember { mutableStateOf(true) }
+//    TextField(
+//        value = password,
+//        onValueChange = { updatedPassword: String -> onTextFieldChanged(updatedPassword) },
+//        placeholder = { Text(text = "Contraseña") },
+//        modifier = Modifier.fillMaxWidth(),
+//        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+//        singleLine = true,
+//        maxLines = 1,
+//        visualTransformation =
+//        if (hidden) PasswordVisualTransformation() else VisualTransformation.None,
+//        colors = TextFieldDefaults.textFieldColors(
+//            textColor = Color(0xFFCCFF00),
+//            containerColor = Color(0xFF1E1E1E),
+//        )
+//    )
+//}
 @OptIn(ExperimentalMaterial3Api::class)
-
 @Composable
 fun PasswordField(password: String, onTextFieldChanged: (String) -> Unit) {
     var hidden by remember { mutableStateOf(true) }
@@ -162,9 +184,25 @@ fun PasswordField(password: String, onTextFieldChanged: (String) -> Unit) {
         colors = TextFieldDefaults.textFieldColors(
             textColor = Color(0xFFCCFF00),
             containerColor = Color(0xFF1E1E1E),
-        )
+        ),
+        trailingIcon = {
+            val visibilityIcon =
+                if (hidden) painterResource(id = R.drawable.nover)
+                else painterResource(id = R.drawable.ver)
+            IconButton(
+                onClick = { hidden = !hidden },
+                modifier = Modifier.padding(end = 8.dp)
+            ) {
+                Icon(
+                    painter = visibilityIcon,
+                    contentDescription = if (hidden) "Mostrar contraseña" else "Ocultar contraseña",
+                    tint = Color(0xFFCCFF00)
+                )
+            }
+        }
     )
 }
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 
