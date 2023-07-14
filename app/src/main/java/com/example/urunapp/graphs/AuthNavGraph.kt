@@ -17,6 +17,7 @@ import com.example.urunapp.RetrofitApplication
 import com.example.urunapp.SplashScreen
 import com.example.urunapp.network.service.AuthService
 import com.example.urunapp.repository.CredentialsRepository
+import com.example.urunapp.ui.hikemap.HikemapScreen
 import com.example.urunapp.ui.login.ui.LoginScreen
 import com.example.urunapp.ui.login.ui.LoginViewModel
 import com.example.urunapp.ui.register.ui.RegisterScreen
@@ -91,7 +92,12 @@ fun NavGraphBuilder.authNavGraph(navController: NavHostController, app: Retrofit
 
         // WelcomeScreen es la pantalla de bienvenida
         composable(route = AuthScreen.WelcomeScreen.route) {
-            ScreenWelcome(viewModel = welcomeViewModel)
+            ScreenWelcome(viewModel = welcomeViewModel, navController)
+        }
+
+        //Agregando cambiar al momento de hacer el HomeNavGraph
+        composable(route = AuthScreen.HikeMap.route) {
+            HikemapScreen()
         }
     }
 }
@@ -103,4 +109,7 @@ sealed class AuthScreen(val route: String) {
     object LoginScreen : AuthScreen("login_screen")
     object RegisterScreen : AuthScreen("register_screen")
     object WelcomeScreen : AuthScreen("welcome_screen")
+    //Agregando cambiar al momento de hacer el HomeNavGraph
+    object HikeMap: AuthScreen("HikeMap")
 }
+

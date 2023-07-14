@@ -38,13 +38,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.urunapp.R
+import com.example.urunapp.graphs.AuthScreen
 import com.example.urunapp.repository.CredentialsRepository
 import com.example.urunapp.ui.theme.Mycolors
 
 
 @Preview(showBackground = true)
 @Composable
-fun ScreenWelcome(viewModel: WelcomeViewModel) {
+fun ScreenWelcome(viewModel: WelcomeViewModel, navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -60,7 +61,7 @@ fun ScreenWelcome(viewModel: WelcomeViewModel) {
             ImageLogo()
         }
         Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.CenterStart) {
-            InfoUser(modifier = Modifier, viewModel = viewModel)
+            InfoUser(modifier = Modifier, viewModel = viewModel, navController = navController)
 
         }
     }
@@ -87,7 +88,7 @@ fun ImageLogo() {
 }
 
 @Composable
-fun InfoUser(modifier: Modifier, viewModel: WelcomeViewModel) {
+fun InfoUser(modifier: Modifier, viewModel: WelcomeViewModel, navController: NavController) {
     val userEmail: String by viewModel.userEmail.observeAsState("")
     val altura: Double by viewModel.altura.observeAsState(0.0)
     val peso: Double by viewModel.peso.observeAsState(0.0)
@@ -266,17 +267,22 @@ fun InfoUser(modifier: Modifier, viewModel: WelcomeViewModel) {
 
             kilocals(calorias) { viewModel.setCalorias(it) }
 
-            // Button(
-             //   onClick = { viewModel.saveObjective() },
-              //  modifier = Modifier
-                //    .padding(top = 8.dp)
-                  //  .width(200.dp)
-                   // .background(Mycolors.greenUrun, RoundedCornerShape(16.dp))
-                   // .border(2.dp, Mycolors.greenUrun, RoundedCornerShape(16.dp)),
-                //colors = ButtonDefaults.buttonColors(Mycolors.greenUrun)
-            //) {
-             //   Text(text = "iniciar", color = Mycolors.backgroundUrun, modifier = Modifier.scale(1.2f))
-            // }
+            //Boton iniciar
+            Button(
+                onClick = { navController.navigate(AuthScreen.HikeMap.route) },
+                modifier = Modifier
+                    .padding(top = 8.dp)
+                    .width(200.dp)
+                    .background(Mycolors.greenUrun, RoundedCornerShape(16.dp))
+                    .border(2.dp, Mycolors.greenUrun, RoundedCornerShape(16.dp)),
+                colors = ButtonDefaults.buttonColors(Mycolors.greenUrun)
+            ) {
+                Text(
+                    text = "iniciar",
+                    color = Mycolors.backgroundUrun,
+                    modifier = Modifier.scale(1.2f)
+                )
+            }
         }
     }
 }

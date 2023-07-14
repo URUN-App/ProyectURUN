@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.urunapp.RetrofitApplication
+import com.example.urunapp.ui.hikemap.HikemapScreen
 
 
 @Composable
@@ -18,6 +19,9 @@ fun RootNavigationGraph(navController: NavHostController) {
     ) {
         // Define la ruta de navegación para la autenticación.
         authNavGraph(navController = navController, app = RetrofitApplication())
+        composable(route = Graph.HOME){
+            HikemapScreen()
+        }
     }
 }
 
