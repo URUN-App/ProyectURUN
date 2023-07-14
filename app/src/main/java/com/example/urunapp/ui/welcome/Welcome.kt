@@ -90,12 +90,10 @@ fun ImageLogo() {
 @Composable
 fun InfoUser(modifier: Modifier, viewModel: WelcomeViewModel, navController: NavController) {
     val userEmail: String by viewModel.userEmail.observeAsState("")
-    val altura: Double by viewModel.altura.observeAsState(0.0)
-    val peso: Double by viewModel.peso.observeAsState(0.0)
-    val distancia: Double by viewModel.distancia.observeAsState(0.0)
-    val calorias: Double by viewModel.calorias.observeAsState(0.0)
-    val actividad: String by viewModel.actividad.observeAsState("")
-    val periodo: String by viewModel.periodo.observeAsState("")
+    val high: String by viewModel.high.observeAsState(initial = "")
+    val weight: String by viewModel.weight.observeAsState(initial = "")
+    val km: String by viewModel.km.observeAsState(initial = "")
+    val kcal: String by viewModel.kcal.observeAsState(initial = "")
 
     Column(modifier = Modifier.padding(vertical = 5.dp)) {
         Text(
@@ -127,8 +125,8 @@ fun InfoUser(modifier: Modifier, viewModel: WelcomeViewModel, navController: Nav
         )
 
         Spacer(modifier = Modifier.height(16.dp))
-        centimeters(altura) { viewModel.setAltura(it) }
-        weight(peso) { viewModel.setPeso(it) }
+        centimeters(high) { viewModel.onHighChanged(it) }
+        kilocals(weight) { viewModel.onWeightChanged(it) }
 
         Spacer(modifier = Modifier.height(10.dp))
 
@@ -157,7 +155,7 @@ fun InfoUser(modifier: Modifier, viewModel: WelcomeViewModel, navController: Nav
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Button(
-                    onClick = { viewModel.setActividad("Correr") },
+                    onClick = { viewModel.onKmChanged("Correr") },
                     modifier = Modifier
                         .weight(1f)
                         .padding(8.dp)
@@ -169,7 +167,7 @@ fun InfoUser(modifier: Modifier, viewModel: WelcomeViewModel, navController: Nav
                 }
 
                 Button(
-                    onClick = { viewModel.setActividad("Caminar") },
+                    onClick = { viewModel.onKmChanged("Caminar") },
                     modifier = Modifier
                         .weight(1f)
                         .padding(8.dp)
@@ -208,7 +206,7 @@ fun InfoUser(modifier: Modifier, viewModel: WelcomeViewModel, navController: Nav
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Button(
-                        onClick = { viewModel.setPeriodo("Al día") },
+                        onClick = { viewModel.onKcalChanged("Al día") },
                         modifier = Modifier
                             .weight(1f)
                             .padding(8.dp)
@@ -220,7 +218,7 @@ fun InfoUser(modifier: Modifier, viewModel: WelcomeViewModel, navController: Nav
                     }
 
                     Button(
-                        onClick = { viewModel.setPeriodo("A la semana") },
+                        onClick = { viewModel.onKcalChanged("A la semana") },
                         modifier = Modifier
                             .weight(1f)
                             .padding(8.dp)
@@ -234,7 +232,7 @@ fun InfoUser(modifier: Modifier, viewModel: WelcomeViewModel, navController: Nav
             }
 
             Button(
-                onClick = { viewModel.setPeriodo("Al mes") },
+                onClick = { viewModel.onKcalChanged("Al mes") },
                 modifier = Modifier
                     .padding(top = 8.dp)
                     .width(200.dp)
@@ -263,13 +261,16 @@ fun InfoUser(modifier: Modifier, viewModel: WelcomeViewModel, navController: Nav
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier.fillMaxWidth()
         ) {
-            kilometers(distancia) { viewModel.setDistancia(it) }
+            kilometers(km) { viewModel.onKmChanged(it) }
 
-            kilocals(calorias) { viewModel.setCalorias(it) }
+            kilocals(kcal) { viewModel.onKcalChanged(it) }
 
             //Boton iniciar
             Button(
-                onClick = { navController.navigate(AuthScreen.HikeMap.route) },
+                onClick = {
+                    navController.navigate(AuthScreen.HikeMap.route)
+                  //  viewModel.saveObjective()
+                },
                 modifier = Modifier
                     .padding(top = 8.dp)
                     .width(200.dp)
@@ -283,91 +284,83 @@ fun InfoUser(modifier: Modifier, viewModel: WelcomeViewModel, navController: Nav
                     modifier = Modifier.scale(1.2f)
                 )
             }
+
         }
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun centimeters(altura: Double, onTextFieldChanged: (Double) -> Unit) {
-    val alturaText = altura.toString()
+fun centimeters(high: String, onTextFieldChanged: (String) -> Unit) {
     OutlinedTextField(
-        value = alturaText,
-        onValueChange = { text ->
-            val parsedValue = text.toDoubleOrNull() ?: 0.0
-            onTextFieldChanged(parsedValue)
-        },
-        modifier = Modifier.padding(8.dp),
+        value = high, onValueChange = { onTextFieldChanged(it) },
+        modifier = Modifier
+
+            .padding(8.dp),
         textStyle = androidx.compose.ui.text.TextStyle(color = Color.White),
         label = { Text(text = "cm") },
         shape = RoundedCornerShape(16.dp),
         colors = TextFieldDefaults.outlinedTextFieldColors(
             focusedBorderColor = Mycolors.greenUrun,
             focusedLabelColor = Mycolors.greenUrun
-        )
-    )
+        ))
 }
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun weight(peso: Double, onTextFieldChanged: (Double) -> Unit) {
-    val pesoText = peso.toString()
+fun kilogcals(weight: String, onTextFieldChanged: (String) -> Unit) {
+
     OutlinedTextField(
-        value = pesoText,
-        onValueChange = { text ->
-            val parsedValue = text.toDoubleOrNull() ?: 0.0
-            onTextFieldChanged(parsedValue)
-        },
-        modifier = Modifier.padding(8.dp),
+        value = weight, onValueChange = { onTextFieldChanged(it) },
+        modifier = Modifier
+
+            .padding(8.dp),
         textStyle = androidx.compose.ui.text.TextStyle(color = Color.White),
         label = { Text(text = "kg") },
         shape = RoundedCornerShape(16.dp),
         colors = TextFieldDefaults.outlinedTextFieldColors(
             focusedBorderColor = Mycolors.greenUrun,
             focusedLabelColor = Mycolors.greenUrun
-        )
-    )
+        ))
 }
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun kilometers(km: Double, onTextFieldChanged: (Double) -> Unit) {
-    val kmText = km.toString()
+fun kilometers(km: String, onTextFieldChanged: (String) -> Unit) {
     OutlinedTextField(
-        value = kmText,
-        onValueChange = { text ->
-            val parsedValue = text.toDoubleOrNull() ?: 0.0
-            onTextFieldChanged(parsedValue)
-        },
-        modifier = Modifier.padding(8.dp),
+        value = km, onValueChange = { onTextFieldChanged(it) },
+        modifier = Modifier
+
+            .padding(8.dp),
         textStyle = androidx.compose.ui.text.TextStyle(color = Color.White),
         label = { Text(text = "km") },
         shape = RoundedCornerShape(16.dp),
         colors = TextFieldDefaults.outlinedTextFieldColors(
             focusedBorderColor = Mycolors.greenUrun,
             focusedLabelColor = Mycolors.backgroundUrun
-        )
-    )
+        ))
+
+
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun kilocals(kcal: Double, onTextFieldChanged: (Double) -> Unit) {
-    val kcalText = kcal.toString()
+fun kilocals(kcal: String, onTextFieldChanged: (String) -> Unit) {
     OutlinedTextField(
-        value = kcalText,
-        onValueChange = { text ->
-            val parsedValue = text.toDoubleOrNull() ?: 0.0
-            onTextFieldChanged(parsedValue)
-        },
-        modifier = Modifier.padding(8.dp),
+        value = kcal, onValueChange = { onTextFieldChanged(it) },
+        modifier = Modifier
+
+            .padding(8.dp),
         textStyle = androidx.compose.ui.text.TextStyle(color = Color.White),
         label = { Text(text = "kcal") },
         shape = RoundedCornerShape(16.dp),
         colors = TextFieldDefaults.outlinedTextFieldColors(
             focusedBorderColor = Mycolors.greenUrun,
             focusedLabelColor = Mycolors.greenUrun
+
         )
+
     )
 }
