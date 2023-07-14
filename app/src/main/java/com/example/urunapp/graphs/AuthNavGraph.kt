@@ -27,6 +27,7 @@ import com.example.urunapp.ui.start.ui.start
 import com.example.urunapp.ui.welcome.ScreenWelcome
 import com.example.urunapp.ui.welcome.WelcomeViewModel
 
+
 // Anotación que suprime el lint para la advertencia de "UnrememberedGetBackStackEntry"
 @SuppressLint("UnrememberedGetBackStackEntry")
 
