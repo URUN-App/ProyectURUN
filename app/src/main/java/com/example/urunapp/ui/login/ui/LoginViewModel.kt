@@ -1,6 +1,5 @@
 package com.example.urunapp.ui.login.ui
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
@@ -9,14 +8,12 @@ import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.urunapp.RetrofitApplication
 import com.example.urunapp.network.ApiResponse
+import com.example.urunapp.network.service.AuthService
 import com.example.urunapp.repository.CredentialsRepository
 import com.example.urunapp.ui.welcome.WelcomeViewModel
 import kotlinx.coroutines.launch
-import java.lang.Exception
 
-class LoginViewModel(private val repository: CredentialsRepository,
-                     private val welcomeViewModel: WelcomeViewModel) : ViewModel() {
-
+class LoginViewModel(private val repository: CredentialsRepository, private val welcomeViewModel: WelcomeViewModel) : ViewModel() {
     var email = MutableLiveData("")
     var password = MutableLiveData("")
 
@@ -53,7 +50,6 @@ class LoginViewModel(private val repository: CredentialsRepository,
                         when (userInfoResponse) {
                             is ApiResponse.Success -> {
                                 val user = userInfoResponse.data.user
-                                welcomeViewModel.setUserEmail(user.email)
                             }
                             is ApiResponse.ErrorWithMessage -> {
                                 // Error al obtener la información del usuario
