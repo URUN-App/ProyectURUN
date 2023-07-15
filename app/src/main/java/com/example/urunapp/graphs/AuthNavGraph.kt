@@ -1,29 +1,24 @@
 package com.example.urunapp.graphs
 
 import android.annotation.SuppressLint
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
 import com.example.urunapp.RetrofitApplication
 import com.example.urunapp.SplashScreen
-import com.example.urunapp.network.service.AuthService
-import com.example.urunapp.repository.CredentialsRepository
 import com.example.urunapp.ui.hikemap.HikemapScreen
 import com.example.urunapp.ui.login.ui.LoginScreen
 import com.example.urunapp.ui.login.ui.LoginViewModel
+import com.example.urunapp.ui.progress.ProgressScreen
 import com.example.urunapp.ui.register.ui.RegisterScreen
 import com.example.urunapp.ui.register.ui.RegisterViewModel
 import com.example.urunapp.ui.start.ui.StartScreen
-import com.example.urunapp.ui.start.ui.start
+import com.example.urunapp.ui.user.ScreenUser
 import com.example.urunapp.ui.welcome.ScreenWelcome
 import com.example.urunapp.ui.welcome.WelcomeViewModel
 
@@ -96,13 +91,21 @@ fun NavGraphBuilder.authNavGraph(navController: NavHostController, app: Retrofit
             ScreenWelcome(viewModel = welcomeViewModel, navController)
         }
 
+
         //Agregando cambiar al momento de hacer el HomeNavGraph
         composable(route = AuthScreen.HikeMap.route) {
-            HikemapScreen()
+            HikemapScreen(navController)
+        }
+        composable(route = AuthScreen.User.route) {
+            ScreenUser(navController)
+        }
+        composable(route = AuthScreen.Progress.route) {
+            ProgressScreen(navController)
         }
     }
 }
 
+// Sealed class que define las pantallas de autenticación y sus rutas
 // Sealed class que define las pantallas de autenticación y sus rutas
 sealed class AuthScreen(val route: String) {
     object SplashScreen : AuthScreen("splash_screen")
@@ -112,5 +115,6 @@ sealed class AuthScreen(val route: String) {
     object WelcomeScreen : AuthScreen("welcome_screen")
     //Agregando cambiar al momento de hacer el HomeNavGraph
     object HikeMap: AuthScreen("HikeMap")
+    object User: AuthScreen("USER")
+    object Progress: AuthScreen("PROGRESS")
 }
-

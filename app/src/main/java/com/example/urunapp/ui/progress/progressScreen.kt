@@ -13,6 +13,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -24,22 +28,25 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.example.urunapp.R
+import com.example.urunapp.graphs.AuthScreen
 import com.example.urunapp.ui.theme.Mycolors
 
 @Preview
 @Composable
-fun ProgressScreen() {
+fun ProgressScreen(navController: NavHostController) {
     // Este Column contiene toda las vistas y esta divido en box
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Mycolors.backgroundUrun)
+            .verticalScroll(rememberScrollState())
     ) {
         // Dentro de este box esta la imagen del logo
         Box(
@@ -65,6 +72,9 @@ fun ProgressScreen() {
         Box(modifier = Modifier.fillMaxWidth()) {
 
             ImageAvatar()
+        }
+        Box(modifier = Modifier.fillMaxWidth()) {
+           Buttons(navController)
         }
 
     }
@@ -285,4 +295,39 @@ fun ImageAvatar(){
 
     }
 
+}
+@Composable
+fun Buttons(navController: NavController) {
+    Row(
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Button(
+            onClick = { navController.navigate(AuthScreen.HikeMap.route) },
+            modifier = Modifier
+                .weight(1f)
+                .height(45.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFFCCFF00),
+                disabledContainerColor = Color(0xFFCCFF00),
+                contentColor = Color(0xFF1E1E1E),
+                disabledContentColor = Color(0xFF1E1E1E)
+            )
+        ) {
+            Text(text = "Hikemap")
+        }
+        Button(
+            onClick = { navController.navigate(AuthScreen.User.route) },
+            modifier = Modifier
+                .weight(1f)
+                .height(45.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFFCCFF00),
+                disabledContainerColor = Color(0xFFCCFF00),
+                contentColor = Color(0xFF1E1E1E),
+                disabledContentColor = Color(0xFF1E1E1E)
+            )
+        ) {
+            Text(text = "Usuario")
+        }
+    }
 }

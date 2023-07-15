@@ -18,6 +18,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.IconButton
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -27,13 +29,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.example.urunapp.R
+import com.example.urunapp.graphs.AuthScreen
 import com.example.urunapp.ui.theme.Mycolors
 import com.example.urunapp.ui.welcome.ImageLogo
 
 @Preview
 @Composable
-fun ScreenUser() {
+fun ScreenUser(navController: NavHostController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -95,6 +100,9 @@ fun ScreenUser() {
         Spacer(modifier = Modifier.height(10.dp))
         Box(modifier = Modifier.fillMaxWidth()) {
             Resumen()
+        }
+        Box(modifier = Modifier.fillMaxWidth()) {
+            Buttons(navController)
         }
 
 
@@ -262,7 +270,9 @@ fun Resumen() {
             modifier = Modifier.padding(start = 20.dp),
             fontSize = (30.sp)
         )
-        Row(modifier = Modifier.width(400.dp).padding(start = 20.dp), Arrangement.SpaceBetween) {
+        Row(modifier = Modifier
+            .width(400.dp)
+            .padding(start = 20.dp), Arrangement.SpaceBetween) {
             Column(modifier = Modifier.width(200.dp)) {
                 Text(
                     text = "20.45",
@@ -299,3 +309,38 @@ fun Resumen() {
 }
 
 
+@Composable
+fun Buttons(navController: NavController) {
+    Row(
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Button(
+            onClick = { navController.navigate(AuthScreen.HikeMap.route) },
+            modifier = Modifier
+                .weight(1f)
+                .height(45.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFFCCFF00),
+                disabledContainerColor = Color(0xFFCCFF00),
+                contentColor = Color(0xFF1E1E1E),
+                disabledContentColor = Color(0xFF1E1E1E)
+            )
+        ) {
+            Text(text = "Hikemap")
+        }
+        Button(
+            onClick = { navController.navigate(AuthScreen.Progress.route) },
+            modifier = Modifier
+                .weight(1f)
+                .height(45.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFFCCFF00),
+                disabledContainerColor = Color(0xFFCCFF00),
+                contentColor = Color(0xFF1E1E1E),
+                disabledContentColor = Color(0xFF1E1E1E)
+            )
+        ) {
+            Text(text = "Progress")
+        }
+    }
+}

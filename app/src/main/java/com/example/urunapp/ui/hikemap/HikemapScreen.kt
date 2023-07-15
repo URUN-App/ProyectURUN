@@ -1,58 +1,44 @@
 package com.example.urunapp.ui.hikemap
 
-import android.icu.text.Transliterator.Position
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.magnifier
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.IntSize
 
 import androidx.compose.ui.unit.dp
 import com.example.urunapp.R
-import com.example.urunapp.ui.login.ui.Login
-import com.example.urunapp.ui.progress.Activities
-import com.example.urunapp.ui.progress.ImageAvatar
 import com.example.urunapp.ui.progress.ImageLogo
-import com.example.urunapp.ui.progress.Objectives
 import com.example.urunapp.ui.theme.Mycolors
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.Marker
-import com.google.maps.android.compose.CameraPositionState
 import com.google.maps.android.compose.GoogleMap
-import com.google.maps.android.compose.Marker
-import com.google.maps.android.compose.currentCameraPositionState
 import com.google.maps.android.compose.rememberCameraPositionState
-import kotlin.concurrent.timer
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import com.example.urunapp.graphs.AuthScreen
 
 @Preview
 @Composable
-fun HikemapScreen() {
+fun HikemapScreen(navController: NavHostController) {
     // Este Column contiene toda las vistas y esta divido en box
 
     Column(
@@ -77,8 +63,9 @@ fun HikemapScreen() {
             resume()
         }
         Box(modifier = Modifier.fillMaxWidth()) {
-            MyGoogleMaps()
+            Buttons(navController)
         }
+
 
     }
 }
@@ -162,20 +149,37 @@ fun ImageLogo() {
 
 
 @Composable
-fun MyGoogleMaps(){
-
-
-    Box(modifier = Modifier
-        .fillMaxWidth()
-        .padding(start = 20.dp, end = 20.dp, top = 150.dp)) {
-        GoogleMap()
-        {
-            val sansalvador=LatLng(13.68935,-89.18718)
-            val defaultCameraPosition= CameraPosition.fromLatLngZoom(sansalvador,11f)
-            val CameraPositionState= rememberCameraPositionState(){
-                position=defaultCameraPosition
-            }
+fun Buttons(navController: NavController) {
+    Row(
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Button(
+            onClick = { navController.navigate(AuthScreen.User.route) },
+            modifier = Modifier
+                .weight(1f)
+                .height(45.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFFCCFF00),
+                disabledContainerColor = Color(0xFFCCFF00),
+                contentColor = Color(0xFF1E1E1E),
+                disabledContentColor = Color(0xFF1E1E1E)
+            )
+        ) {
+            Text(text = "User")
+        }
+        Button(
+            onClick = { navController.navigate(AuthScreen.Progress.route) },
+            modifier = Modifier
+                .weight(1f)
+                .height(45.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFFCCFF00),
+                disabledContainerColor = Color(0xFFCCFF00),
+                contentColor = Color(0xFF1E1E1E),
+                disabledContentColor = Color(0xFF1E1E1E)
+            )
+        ) {
+            Text(text = "Progress")
         }
     }
-
 }
